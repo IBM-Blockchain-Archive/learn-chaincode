@@ -24,85 +24,36 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 ##GitHub Setup
 The Bluemix IBM Blockchain service currently requires chaincode to be in a [GitHub](https://Github.com/) repository.
 Therefore, you should register a GitHub account and setup Git locally on your computer.
-- Create a new repo for this project named `my_first_chaincode`
+- Create a new repo for this project named `learning_chaincode`
 - Clone the repo to your local machine
 
-###Starting Code
-Copy and save the starting template code below to a new file: `my_first_chaincode/chaincode.go`
+###Download Chaincode
+There is starting chaincode that you should [download](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) and save to your project.
+The finished chaincode we will build up to is also [available](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go).
+Make sure it builds in your local environment:
+- Open terminal/command prompt
+- Browse to the folder that contains `chaincode_start.go` and type:
+	
+	```
+	go build ./
+	```
+- It should return with no errors/text
 
-**Template Code**
-```
-package main
-
-import (
-	"errors"
-	"fmt"
-
-	"GitHub.com/Hyperledger/fabric/core/chaincode/shim"
-)
-
-// SimpleChaincode example simple Chaincode implementation
-type SimpleChaincode struct {
-}
-
-// Main
-func main() {
-	err := shim.Start(new(SimpleChaincode))
-	if err != nil {
-		fmt.Printf("Error starting Simple chaincode: %s", err)
-	}
-}
-
-// Init - reset all the things
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-	}
-
-	return nil, nil
-}
-
-// Invoke - Our entry point
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	fmt.Println("invoke is running " + function)
-
-	// Handle different functions
-	if function == "init" {													//initialize the chaincode state, used as reset
-		return t.Init(stub, "init", args)
-	} else if function == "dummy_invoke" {									//deletes an entity from its state
-		return t.dummy_invoke(stub, args)
-	}
-	fmt.Println("invoke did not find func: " + function)					//error
-
-	return nil, errors.New("Received unknown function invocation")
-}
-
-// Query - Our entry point for Queries
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	fmt.Println("query is running " + function)
-
-	// Handle different functions
-	if function == "dummy_query" {											//read a variable
-		return t.dummy_query(stub, args)
-	}
-	fmt.Println("query did not find func: " + function)						//error
-
-	return nil, errors.New("Received unknown function query")
-}
-
-```
-
-###Dependencies
-The `import` statement list a few dependencies that you will need for your chaincode to build successfully.
-- The Hyperledger shim.  This is the code that interfaces your golang code with a peer.
 
 ###Implementing the chaincode interface
-First, implement the chaincode shim interface in your golang code.  The three functions are **Init**, **Invoke**, and **Query**. 
+The first thing we need to do is implement the chaincode shim interface in your golang code. 
+The three main functions are **Init**, **Invoke**, and **Query**. 
 All three functions have the same prototype; they take in a function name and an array of strings. 
 The difference between the functions is when they will be called. 
 We will be building up to a working chaincode to create generic assets. 
 
-###Init
+###Dependencies
+The `import` statement list a few dependencies that you will need for your chaincode to build successfully.
+- `fmt` - contains `Println` for debugging/logging
+- `errors` - standard go error format
+- `github.com/hyperledger/fabric/core/chaincode/shim` - the code that interfaces your golang code with a peer.
+
+###Init()
 Init is called when you first deploy your chaincode. 
 As the name implies, this function should be used to do any initialization your chaincode needs. 
 In our example, we use Init to configure the initial state of one variables on the ledger.
@@ -128,7 +79,7 @@ This is done by using the shim function `stub.PutState`.
 The first argument is the key as a string, and the second argument is the value as an array of bytes.
 This function may return an error which our code inspects and returns if present.
 
-###Invoke
+###Invoke()
 `Invoke` is called when you want to call chaincode functions to do real work. 
 Invocation transactions will be captured as blocks on the chain. 
 The structure of `Invoke` is simple. 
@@ -178,7 +129,7 @@ This `write` function should look similar to `Init` change we just did.
 One major difference is that we can now set the key and value for `PutState`. 
 This function will now let us store any key/value pair we want into the blockchain ledger. 
 
-###Query
+###Query()
 As the name implies, Query is called whenever you query your chaincode state. 
 Queries do not result in blocks being added to the chain. 
 We can and will use Query to read the value of our chaincode state's key/value pairs. 
@@ -226,7 +177,7 @@ This shim function just takes 1 string argument.
 The argument is the name of the key to retrieve. 
 Next this function returns the value as an array of bytes back to `Query` who in turn sends it back to the REST handler.
 
-### Main
+### Main()
 Finally, you need to create a short `main` function that will execute when each peer deploys their instance of the chaincode.
 It just starts the chaincode and registers it with the peer. 
 You don’t need to add any code here beyond what was already in the example code.
@@ -269,9 +220,8 @@ This means that you must pass in a registered enrollID from the service credenti
 - Expand the `POST /registrar` section by clicking it
 - Set the body's text field.  It should be JSON that contains an enrollID and secret from your list above. Example:
 
-```
-[ screenshot of the /register endpoint in the swagger UI.  Have the information for the request filled in]
-```
+
+![Body Example](/imgs/registrar.png)
 
 Now that we have enrollID setup, we can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
 
@@ -306,7 +256,7 @@ When you send a deploy request to a peer, you send it the url to you chaincode r
 The response should look like:
 
 ```
-[pre of a successful deploy response]
+[todo picture of response]
 ```
 
 The response for the deployment will contain an ID that is associated with this chaincode. 
@@ -339,6 +289,10 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 	}
 	```
 	
+```
+[todo picture of response]
+```
+	
 Hopefully you see that the value of `hello_world` is "hi there". 
 This was set when by the body of the deploy call we sent earlier. 
 
@@ -369,6 +323,10 @@ Lets change the value of `hello_world` to "go away".
 		"id": 3
 	}
 	```
+
+```
+[todo picture of response]
+```
 
 Now to test if it stuck lets re-run the query above. 
 

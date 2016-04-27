@@ -229,6 +229,17 @@ Now that we have enrollID setup, we can use this ID when deploying, invoking, an
 ###Deploying the chaincode
 In order to deploy chaincode through the rest interface, you will need to have the chaincode stored in a public git repository. 
 When you send a deploy request to a peer, you send it the url to you chaincode repository, as well as the parameters necessary to initialize the chaincode. 
+
+**Before we deploy** the code lets make sure it builds locally!
+- Open terminal/command prompt
+- Browse to the folder that contains `chaincode_start.go` and type:
+	
+	```
+	go build ./
+	```
+- It should return with no errors/text
+
+
 - Expand the "Chaincode" API section by clicking it
 - Expand the `POST /chaincode` section by clicking it
 - Set the `DeploySpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode repo path. Also use the same enrollID you used in the `/registrar` step.

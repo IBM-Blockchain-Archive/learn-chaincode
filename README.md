@@ -197,6 +197,7 @@ We’ve included a Swagger UI in the dashboard for your service instance that al
 
 ###Swagger API
 The first step is to find the api swagger page. 
+
 1. Login to [Bluemix](https://console.ng.bluemix.net/login)
 1. You probably landed on the Dashboard, but double check the top nav bar.  Click the "Dashboard" tab if you are not already there. 
 1. Also make sure you are in the same Bluemix "space" that contains your IBM Blockchain service. The space navigation is on the left. 

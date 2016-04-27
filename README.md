@@ -221,7 +221,7 @@ This means that you must pass in a registered enrollID from the service credenti
 - Set the body's text field.  It should be JSON that contains an enrollID and secret from your list above. Example:
 
 
-![Body Example](/imgs/registrar.png)
+![Body Example](./imgs/registrar.png)
 
 Now that we have enrollID setup, we can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
 

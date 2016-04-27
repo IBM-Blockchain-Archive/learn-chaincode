@@ -5,9 +5,8 @@ We will be building up to a working chaincode that will be able to create generi
 Then we will show how to interact with the chaincode via the networks API.
 
 ##What is chaincode?
-Chaincode is a piece of code that lets you interact with a network's shared ledger.  Whenever you 'invoke' a transaction on the network, you are effectively calling a function in a piece of chaincode that read and writes values to the ledger.
+Chaincode is a piece of code that lets you interact with a network's shared ledger.  Whenever you 'invoke' a transaction on the network, you are effectively calling a function in a piece of chaincode that reads and writes values to the ledger.
 
-[Insert a nice diagram from sean or something]
 
 ***
 
@@ -23,7 +22,7 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 
 ##GitHub Setup
 The Bluemix IBM Blockchain service currently requires chaincode to be in a [GitHub](https://Github.com/) repository.
-Therefore, you should register a GitHub account and setup Git locally on your computer.
+Therefore, you should register a GitHub account and setup Git locally on your computer. Need help? Vist [set up git](https://help.github.com/articles/set-up-git/) for more information.
 - Create a new repo for this project named `learning_chaincode`
 - Clone the repo to your local machine
 
@@ -41,16 +40,16 @@ Make sure it builds in your local environment:
 
 
 ###Implementing the chaincode interface
-The first thing we need to do is implement the chaincode shim interface in your golang code. 
+The first thing you need to do is implement the chaincode shim interface in your golang code. 
 The three main functions are **Init**, **Invoke**, and **Query**. 
 All three functions have the same prototype; they take in a function name and an array of strings. 
-The difference between the functions is when they will be called. 
+The main difference between the functions is when they will be called. 
 We will be building up to a working chaincode to create generic assets. 
 
 ###Dependencies
-The `import` statement list a few dependencies that you will need for your chaincode to build successfully.
-- `fmt` - contains `Println` for debugging/logging
-- `errors` - standard go error format
+The `import` statement lists a few dependencies that you will need for your chaincode to build successfully.
+- `fmt` - contains `Println` for debugging/logging.
+- `errors` - standard go error format.
 - `github.com/hyperledger/fabric/core/chaincode/shim` - the code that interfaces your golang code with a peer.
 
 ###Init()
@@ -58,7 +57,7 @@ Init is called when you first deploy your chaincode.
 As the name implies, this function should be used to do any initialization your chaincode needs. 
 In our example, we use Init to configure the initial state of one variables on the ledger.
 
-In our `chaincode.go` file lets change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
+In your `chaincode.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -85,7 +84,7 @@ Invocation transactions will be captured as blocks on the chain.
 The structure of `Invoke` is simple. 
 It receives a `function` argument and based on this argument calls Go functions in the chaincode.
 
-In our `chaincode.go` file lets change the `Invoke` function so that it calls a generic write function.
+In your `chaincode.go` file, change the `Invoke` function so that it calls a generic write function.
 
 ```
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -103,7 +102,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 }
 ```
 
-Now that it’s looking for `write` let’s make that function somewhere in our `chaincode.go` file.
+Now that it’s looking for `write` let’s make that function somewhere in your `chaincode.go` file.
 
 ```
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
@@ -125,16 +124,16 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 }
 ```
 
-This `write` function should look similar to `Init` change we just did. 
-One major difference is that we can now set the key and value for `PutState`. 
-This function will now let us store any key/value pair we want into the blockchain ledger. 
+This `write` function should look similar to the `Init` change you just did. 
+One major difference is that you can now set the key and value for `PutState`. 
+This function allows you to store any key/value pair you want into the blockchain ledger.  
 
 ###Query()
-As the name implies, Query is called whenever you query your chaincode state. 
+As the name implies, `Query` is called whenever you query your chaincode state. 
 Queries do not result in blocks being added to the chain. 
-We can and will use Query to read the value of our chaincode state's key/value pairs. 
+You will use `Query` to read the value of your chaincode state's key/value pairs. 
 
-In our `chaincode.go` file lets change the `Query` function so that it calls a generic read function.
+In your `chaincode.go` file, change the `Query` function so that it calls a generic read function.
 
 ```
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -150,7 +149,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 }
 ```
 
-Now that it’s looking for `read` let’s make that function somewhere in our `chaincode.go` file.
+Now that it’s looking for `read`, make that function somewhere in your `chaincode.go` file.
 
 ```
 func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
@@ -180,7 +179,7 @@ Next this function returns the value as an array of bytes back to `Query` who in
 ### Main()
 Finally, you need to create a short `main` function that will execute when each peer deploys their instance of the chaincode.
 It just starts the chaincode and registers it with the peer. 
-You don’t need to add any code here beyond what was already in the example code.
+You don’t need to add any code here beyond what is already in the example code.
 
 ```
 func main() {
@@ -205,11 +204,11 @@ The first step is to find the api swagger page.
 1. Now you should see a white page with the words "Welcome to the IBM Blockchain..." and there should be a teal "LAUNCH" button on the right, click it. 
 1. You are on the monitor page and you should see 2 tables, though the bottom one may be empty.
 	- Noteworthy information on the network tab:
-		- **Peer Logs** will be found in the top table. Find the row for peer 1 and then click the file like icon in the last row.
+		- **Peer Logs** will be found in the top table. Find the row for peer 1 and then click the file-like icon in the last row.
 			- It should have opened a new window. Congratulations you found your peer logs!
-			- In addition to this static view we have live **streaming peer logs** in the "View Logs" tab near the top of the page
-		- **ChainCode Logs** will be found in the bottom table. There is one row for every chaincode and they are labeled using the same chaincode hash that was returned to you when it was deployed. Find the cc id you want, and then select the peer. Finally click the file like icon.
-			- It should have opened a new window. Congratulations you found your peer's chaincode's logs!
+			- In addition to this static view there are live **streaming peer logs** in the "View Logs" tab near the top of the page.
+		- **ChainCode Logs** will be found in the bottom table. There is one row for every chaincode, and they are labeled using the same chaincode hash that was returned to you when it was deployed. Find the chaincode ID you want, and then select the peer. Finally click the file-like icon.
+			- It should have opened a new window. Congratulations you've found your peer's chaincode logs!
 	- **Swagger Tab** is the one labeled **APIs**. Click it to see the API interactive documentation.
 		- You are now on your swagger api page.
 
@@ -224,13 +223,13 @@ This means that you must pass in a registered enrollID from the service credenti
 
 ![Body Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar.PNG)
 
-Now that we have enrollID setup, we can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
+Now that you have enrollID set up, you can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
 
 ###Deploying the chaincode
 In order to deploy chaincode through the rest interface, you will need to have the chaincode stored in a public git repository. 
-When you send a deploy request to a peer, you send it the url to you chaincode repository, as well as the parameters necessary to initialize the chaincode. 
+When you send a deploy request to a peer, you send it the url to your chaincode repository, as well as the parameters necessary to initialize the chaincode. 
 
-**Before we deploy** the code lets make sure it builds locally!
+**Before you deploy** the code, make sure it builds locally!
 - Open terminal/command prompt
 - Browse to the folder that contains `chaincode_start.go` and type:
 	
@@ -306,13 +305,13 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 ```
 	
 Hopefully you see that the value of `hello_world` is "hi there". 
-This was set when by the body of the deploy call we sent earlier. 
+This was set by the body of the deploy call you sent earlier. 
 
 ###Invoke
-Next, we will call our generic write function with invoke. 
-Lets change the value of `hello_world` to "go away".
-- Expand the "Chaincode" API section by clicking it
-- Expand the `POST /chaincode` section by clicking it
+Next, call your generic write function with `invoke`. 
+Change the value of `hello_world` to "go away".
+- Expand the "Chaincode" API section by clicking it.
+- Expand the `POST /chaincode` section by clicking it.
 - Set the `InvokeSpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode name (the hashed ID from deploy). Also use the same enrollID you used in the `/registrar` step.
 
 	```
@@ -340,6 +339,6 @@ Lets change the value of `hello_world` to "go away".
 [todo picture of response]
 ```
 
-Now to test if it stuck lets re-run the query above. 
+Now to test if it's stuck, just re-run the query above. 
 
 That’s all it takes to write basic chaincode.

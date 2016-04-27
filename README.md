@@ -1,8 +1,8 @@
 #How to write Chaincode
 
 ##What is covered?
-We will be building up to a working chaincode that will be able to create generic assets. 
-Then we will show how to interact with the chaincode via the networks API.
+You will be incrementally building up to a working chaincode that will be able to create generic assets. 
+Then you will interact with the chaincode via the network's API.
 
 ##What is chaincode?
 Chaincode is a piece of code that lets you interact with a network's shared ledger.  Whenever you 'invoke' a transaction on the network, you are effectively calling a function in a piece of chaincode that reads and writes values to the ledger.

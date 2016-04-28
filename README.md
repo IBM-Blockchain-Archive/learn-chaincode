@@ -221,7 +221,10 @@ This means that you must pass in a registered enrollID from the service credenti
 - Set the body's text field.  It should be JSON that contains an enrollID and secret from your list above. Example:
 
 
-![Body Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar.PNG)
+![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar.PNG)
+
+![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar_response.PNG)
+
 
 Now that you have enrollID set up, you can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
 
@@ -250,7 +253,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 		"params": {
 			"type": 1,
 			"chaincodeID": {
-				"path": "https://githubub.com/ibm-blockchain/marbles-chaincode/hyperledger/part2"
+				"path": "https://github.com/ibm-blockchain/learn-chaincode/finished"
 			},
 			"ctorMsg": {
 				"function": "init",
@@ -258,7 +261,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 					"hi there"
 				]
 			},
-			"secureContext": "user_type1_xxxxxxxxx"
+			"secureContext": "user_type1_191b8c2993"
 		},
 		"id": 1
 	}
@@ -267,7 +270,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 The response should look like:
 
 ```
-[todo picture of response]
+![Deploy Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/deploy_response.PNG)
 ```
 
 The response for the deployment will contain an ID that is associated with this chaincode.
@@ -301,7 +304,7 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 	```
 
 ```
-[todo picture of response]
+![Query Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/query_response.PNG)
 ```
 
 Hopefully you see that the value of `hello_world` is "hi there".
@@ -336,9 +339,12 @@ Change the value of `hello_world` to "go away".
 	```
 
 ```
-[todo picture of response]
+![Invoke Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/invoke_response.PNG)
 ```
 
 Now to test if it's stuck, just re-run the query above.
+
+![Query2 Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/query2_response.PNG)
+
 
 That’s all it takes to write basic chaincode.

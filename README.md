@@ -300,7 +300,7 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 		"id": 2
 	}
 	```
-	
+
 ![Query Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/query_response.PNG)
 
 Hopefully you see that the value of `hello_world` is "hi there".
@@ -325,6 +325,7 @@ Change the value of `hello_world` to "go away".
 			"ctorMsg": {
 				"function": "write",
 				"args": [
+					"hello_world",
 					"go away"
 				]
 			},

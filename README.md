@@ -223,7 +223,7 @@ This means that you must pass in a registered enrollID from the service credenti
 
 ![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar.PNG)
 
-![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/registrar_response.PNG)
+![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/register_response.PNG)
 
 
 Now that you have enrollID set up, you can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
@@ -269,9 +269,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 
 The response should look like:
 
-```
 ![Deploy Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/deploy_response.PNG)
-```
 
 The response for the deployment will contain an ID that is associated with this chaincode.
 This is how you will reference the chaincode in any future invoke or query requests.
@@ -302,10 +300,8 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 		"id": 2
 	}
 	```
-
-```
+	
 ![Query Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/query_response.PNG)
-```
 
 Hopefully you see that the value of `hello_world` is "hi there".
 This was set by the body of the deploy call you sent earlier.
@@ -338,9 +334,7 @@ Change the value of `hello_world` to "go away".
 	}
 	```
 
-```
 ![Invoke Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/invoke_response.PNG)
-```
 
 Now to test if it's stuck, just re-run the query above.
 

@@ -165,7 +165,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 }
 ```
 
-Now that it’s looking for `read`, make that function somewhere in your `chaincode.go` file.
+Now that it’s looking for `read`, make that function somewhere in your `chaincode_start.go` file.
 
 ```
 func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
@@ -225,7 +225,7 @@ The first step is to find the api swagger page.
 	- Noteworthy information on the network tab:
 		- **Peer Logs** will be found in the top table. Find the row for peer 1 and then click the file-like icon in the last row.
 			- It should have opened a new window. Congratulations you found your peer logs!
-			- In addition to this static view there are live **streaming peer logs** in the "View Logs" tab near the top of the page.
+			- In addition to this static view there are live streaming peer logs in the **View Logs** tab near the top of the page.
 		- **ChainCode Logs** will be found in the bottom table. There is one row for every chaincode, and they are labeled using the same chaincode hash that was returned to you when it was deployed. Find the chaincode ID you want, and then select the peer. Finally click the file-like icon.
 			- It should have opened a new window. Congratulations you've found your peer's chaincode logs!
 	- **Swagger Tab** is the one labeled **APIs**. Click it to see the API interactive documentation.
@@ -234,7 +234,7 @@ The first step is to find the api swagger page.
 ###Secure Enrollment
 Calls to the `/chaincode` endpoint of the rest interface require a secure context ID.
 This means that you must pass in a registered enrollID from the service credentials list in order for most REST calls to be accepted.
-- Click the link "+ Network's Enroll IDs" to expand a list of enrollIDs and their secrets for your network.
+- Click the link **+ Network's Enroll IDs** to expand a list of enrollIDs and their secrets for your network.
 - Expand the "Registrar" API section by clicking it
 - Expand the `POST /registrar` section by clicking it
 - Set the body's text field.  It should be JSON that contains an enrollID and secret from your list above. Example:
@@ -245,7 +245,7 @@ This means that you must pass in a registered enrollID from the service credenti
 ![Register Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/register_response.PNG)
 
 
-Now that you have enrollID set up, you can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
+If you didn't receive a "Login successful" response, go back and make sure you properly copied your enrollID and secret.  Now that you have enrollID set up, you can use this ID when deploying, invoking, and querying chaincode in the subsequent steps.
 
 ###Deploying the chaincode
 In order to deploy chaincode through the rest interface, you will need to have the chaincode stored in a public git repository.

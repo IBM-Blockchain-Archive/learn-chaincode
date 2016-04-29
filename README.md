@@ -1,5 +1,4 @@
 # How to write chaincode
-{: #hellocc}
 This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
 Then, you will interact with the chaincode by using the network's API. After reading and completing this tutorial, you should be able to explicitly answer the following questions:
 - What is chaincode?
@@ -21,7 +20,7 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 #Implementing Your First Chaincode
 
 #### Setting up the environment
-1. Download and install GoLang for your operating system at [GoLang](https://golang.org/dl/).
+1. Download and install Golang for your operating system at [GoLang](https://golang.org/dl/).
 2. Setting your GOPATH
 	- If you jump right to step 3, you might encounter an error similar to this: `$GOPATH must not be set to $GOROOT`.  The $GOPATH is simply a path within your **environment variables** where your go code and future projects will exist.  The $GOPATH must be set to get, build, and install packages outside the standard Go tree.  As a result, this path needs to be unique from the $GOROOT path - where your original go tree resides.  Not too tricky, just create a directory and point your $GOPATH there.
 	- Here's an example for a machine running windows.
@@ -43,7 +42,7 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 The Bluemix IBM Blockchain service currently requires chaincode to be in a [GitHub](https://Github.com/) repository.
 Therefore, you should register a GitHub account and setup Git locally on your computer. Need help? Vist [set up git](https://help.github.com/articles/set-up-git/) for more information.
 
-1. Visit [learn chaincode](https://github.com/IBM-Blockchain/learn-chaincode) and fork this repo.  
+1. Visit [learn chaincode](https://github.com/IBM-Blockchain/learn-chaincode) and fork this repo (hint: you're already in it, just scroll up to the top and click **Fork**.)  
 2. Now clone your fork to your $GOPATH.  
 3. Notice that in this repo we have two different sets of chaincode:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the chaincode you will start building from, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the chaincode that you will ultimately build. 
 4. Make sure it builds in your local environment:
@@ -74,7 +73,7 @@ Init is called when you first deploy your chaincode.
 As the name implies, this function should be used to do any initialization your chaincode needs.
 In our example, we use Init to configure the initial state of one variables on the ledger.
 
-In your `chaincode.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
+In your `chaincode_start.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -101,7 +100,7 @@ Invocation transactions will be captured as blocks on the chain.
 The structure of `Invoke` is simple.
 It receives a `function` argument and based on this argument calls Go functions in the chaincode.
 
-In your `chaincode.go` file, change the `Invoke` function so that it calls a generic write function.
+In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
 
 ```
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -119,7 +118,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 }
 ```
 
-Now that it’s looking for `write` let’s make that function somewhere in your `chaincode.go` file.
+Now that it’s looking for `write` let’s make that function somewhere in your `chaincode_start.go` file.
 
 ```
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
@@ -150,7 +149,7 @@ As the name implies, `Query` is called whenever you query your chaincode state.
 Queries do not result in blocks being added to the chain.
 You will use `Query` to read the value of your chaincode state's key/value pairs.
 
-In your `chaincode.go` file, change the `Query` function so that it calls a generic read function.
+In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function.
 
 ```
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -196,7 +195,7 @@ Next this function returns the value as an array of bytes back to `Query` who in
 ### Main()
 Finally, you need to create a short `main` function that will execute when each peer deploys their instance of the chaincode.
 It just starts the chaincode and registers it with the peer.
-You don’t need to add any code here beyond what is already in the example code.
+You don’t need to add any code for this function.  Both chaincode_start.go and chaincode_finished.go have a `main` function that lives at the top of the file.  The function looks like this:
 
 ```
 func main() {
@@ -206,6 +205,9 @@ func main() {
 	}
 }
 ```
+
+### Need Help?
+If you're stuck or confused at any point, just go check out the chaincode_finished.go file.  Use this file to validate that the code snippets you're building into chaincode_start.go are correct.  
 
 #Interacting with Your First Chaincode
 The fastest way to test your chaincode is to use the rest interface on your peers.

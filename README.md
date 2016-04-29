@@ -42,17 +42,18 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 ##GitHub Setup
 The Bluemix IBM Blockchain service currently requires chaincode to be in a [GitHub](https://Github.com/) repository.
 Therefore, you should register a GitHub account and setup Git locally on your computer. Need help? Vist [set up git](https://help.github.com/articles/set-up-git/) for more information.
+
 1. Visit [learn chaincode](https://github.com/IBM-Blockchain/learn-chaincode) and fork this repo.  
 2. Now clone your fork to your $GOPATH.  
 3. Notice that in this repo we have two different sets of chaincode:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the chaincode you will start building from, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the chaincode that you will ultimately build. 
 4. Make sure it builds in your local environment:
-- Open a terminal or command prompt
-- Browse to the folder that contains `chaincode_start.go` and type:
+	- Open a terminal or command prompt
+	- Browse to the folder that contains `chaincode_start.go` and type:
 
 	```
 	go build ./
 	```
-- It should return with no errors/text
+	- It should return with no errors/text
 
 
 ###Implementing the chaincode interface

@@ -264,6 +264,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 - Expand the "Chaincode" API section by clicking it
 - Expand the `POST /chaincode` section by clicking it
 - Set the `DeploySpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode repo path. Also use the same enrollID you used in the `/registrar` step.
+- The `"path":` will look something like this `"https://github.com/johndoe/learn-chaincode/finished"`.  It's the path of your fork and then one directory down, where our chaincode_finished.go file lives.
 
 	```
 	{

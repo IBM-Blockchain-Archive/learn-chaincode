@@ -20,7 +20,7 @@ Chaincode is a piece of code that lets you interact with a network's shared ledg
 #Implementing Your First Chaincode
 
 #### Setting up the environment
-1. Download and install Golang for your operating system at [GoLang](https://golang.org/dl/).
+1. Download and install Golang for your operating system at [Golang](https://golang.org/dl/).
 2. Setting your GOPATH
 	- If you jump right to step 3, you might encounter an error similar to this: `$GOPATH must not be set to $GOROOT`.  The $GOPATH is simply a path within your **environment variables** where your go code and future projects will exist.  The $GOPATH must be set to get, build, and install packages outside the standard Go tree.  As a result, this path needs to be unique from the $GOROOT path - where your original go tree resides.  Not too tricky, just create a directory and point your $GOPATH there.
 	- Here's an example for a machine running windows.
@@ -71,7 +71,7 @@ The `import` statement lists a few dependencies that you will need for your chai
 ###Init()
 Init is called when you first deploy your chaincode.
 As the name implies, this function should be used to do any initialization your chaincode needs.
-In our example, we use Init to configure the initial state of one variables on the ledger.
+In our example, we use Init to configure the initial state of one variable on the ledger.
 
 In your `chaincode_start.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
@@ -130,7 +130,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the variable and value to set")
 	}
 
-	name = args[0]                            //rename for funsies
+	name = args[0]                            //rename for fun
 	value = args[1]
 	err = stub.PutState(name, []byte(value))  //write the variable into the chaincode state
 	if err != nil {
@@ -188,9 +188,9 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 ```
 
 This `read` function is using the complement to `PutState` called `GetState`.
-This shim function just takes 1 string argument.
+This shim function just takes one string argument.
 The argument is the name of the key to retrieve.
-Next this function returns the value as an array of bytes back to `Query` who in turn sends it back to the REST handler.
+Next, this function returns the value as an array of bytes back to `Query`, who in turn sends it back to the REST handler.
 
 ### Main()
 Finally, you need to create a short `main` function that will execute when each peer deploys their instance of the chaincode.
@@ -221,20 +221,21 @@ The first step is to find the api swagger page.
 1. Also make sure you are in the same Bluemix "space" that contains your IBM Blockchain service. The space navigation is on the left.
 1. There is a "Services" panel on this Bluemix dashboard near the bottom.  Look through your services and click your IBM Blockchain service square.
 1. Now you should see a white page with the words "Welcome to the IBM Blockchain..." and there should be a teal "LAUNCH" button on the right, click it.
-1. You are on the monitor page and you should see 2 tables, though the bottom one may be empty.
+1. You are on the monitor page and you should see two tables, though the bottom one may be empty.
 	- Noteworthy information on the network tab:
 		- **Peer Logs** will be found in the top table. Find the row for peer 1 and then click the file-like icon in the last row.
 			- It should have opened a new window. Congratulations you found your peer logs!
-			- In addition to this static view there are live streaming peer logs in the **View Logs** tab near the top of the page.
+			- In addition to this static view there are live-streaming peer logs in the **View Logs** tab near the top of the page.
 		- **ChainCode Logs** will be found in the bottom table. There is one row for every chaincode, and they are labeled using the same chaincode hash that was returned to you when it was deployed. Find the chaincode ID you want, and then select the peer. Finally click the file-like icon.
 			- It should have opened a new window. Congratulations you've found your peer's chaincode logs!
 	- **Swagger Tab** is the one labeled **APIs**. Click it to see the API interactive documentation.
-		- You are now on your swagger api page.
+		- You are now on your Swagger API page.
 
 ###Secure Enrollment
 Calls to the `/chaincode` endpoint of the rest interface require a secure context ID.
 This means that you must pass in a registered enrollID from the service credentials list in order for most REST calls to be accepted.
 - Click the link **+ Network's Enroll IDs** to expand a list of enrollIDs and their secrets for your network.
+- Open up a notepad and copy one set of credentials.  You will need them later.
 - Expand the "Registrar" API section by clicking it
 - Expand the `POST /registrar` section by clicking it
 - Set the body's text field.  It should be JSON that contains an enrollID and secret from your list above. Example:
@@ -291,7 +292,7 @@ The response should look like:
 
 ![Deploy Example](https://raw.githubusercontent.com/IBM-Blockchain/learn-chaincode/master/imgs/deploy_response.PNG)
 
-The response for the deployment will contain an ID that is associated with this chaincode.
+The response for the deployment will contain an ID that is associated with this chaincode.  The ID is a 128 character alphanumeric hash.  Copy this ID on your notepad as well.  You should now have a set of enrollID credentials and the cryptographic hash representing your chaincode.
 This is how you will reference the chaincode in any future invoke or query requests.
 
 ###Query

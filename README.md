@@ -1,58 +1,53 @@
 # How to write chaincode
-This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
+This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary [Hyperledger fabric](https://github.com/hyperledger/fabric) chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
 Then, you will interact with the chaincode by using the network's API. After reading and completing this tutorial, you should be able to explicitly answer the following questions:
 - What is chaincode?
 - How do I implement the chaincode?
-- What dependencies exist?
+- What dependencies are required to implement chaincode?
 - What are the major functions?
+- How do I compile my chaincode?
 - How do I pass different values to my arguments?
 - How do I securely enroll a user on my network?
-- How do I compile my chaincode?
 - How do I interact with my chaincode by using the REST API?
 
 
-##What is chaincode?
-Chaincode is a piece of code that lets you interact with a network's shared ledger.  Whenever you 'invoke' a transaction on the network, you are effectively calling a function in a piece of chaincode that reads and writes values to the ledger.
-
+## What is chaincode?
+Chaincode is a piece of code that is deployed into a network of [Hyperledger fabric](https://github.com/hyperledger/fabric) peer nodes that enables interaction with that network's shared ledger.  
 
 ***
 
-#Implementing Your First Chaincode
+# Implementing Your First Chaincode
 
 #### Setting up the environment
-1. Download and install Golang for your operating system at [Golang](https://golang.org/dl/).
-2. Setting your GOPATH
-	- If you jump right to step 3, you might encounter an error similar to this: `$GOPATH must not be set to $GOROOT`.  The $GOPATH is simply a path within your **environment variables** where your go code and future projects will exist.  The $GOPATH must be set to get, build, and install packages outside the standard Go tree.  As a result, this path needs to be unique from the $GOROOT path - where your original go tree resides.  Not too tricky, just create a directory and point your $GOPATH there.
-	- Here's an example for a machine running windows.
-		- Create a workspace for your project.  C:\Users\ADMIN\Documents\GoProjects (Note that we named our workspace "GoProjects").
-		- Click the **Start** menu and execute a search for "system environment variables."
-		- Click **Edit the system environment variables**.
-		- Make sure you are on the **Advanced** tab, then click **Environment variables**.
-		- Now look through your system variables and find GOPATH and GOROOT.  If you don't see a GOPATH, simply click **New** and create one.  
-		- Again, GOROOT and GOPATH are the two paths that need to be unique.  Your GOROOT is auto-generated when you install Go.  It should be C:\Go\
-		- So all you need to do now is point your GOPATH to the directory you created.  So our path for **Environment Variable: GOPATH** would equal **C:\Users\ADMIN\Documents\GoProjects**.  
-		- If you're still confused there are some additional resources.  Try typing `go help gopath` into your command terminal, or visit the [Go Documentation](https://golang.org/doc/install).
-3. Add the Hyperledger shim code to your Go path by opening a command prompt or terminal and entering the following:
+Currently, the Hyperlegger Fabric supports chaincode written in Go. We require [Go 1.6](https://blog.golang.org/go1.6). If you are already set up to develop in Go, and you have Go 1.6 installed, you may skip to step 3. If you have already set up a Hyperldger fabric [development environment](https://github.com/hyperledger/fabric/blob/master/docs/dev-setup/devenv.md), you may skip this section entirely.
+
+1. Download and install Golang for your operating system at [Golang](https://golang.org/doc/install). If this is your first time installing Go, you should follow all of the instructions, including testing that it has been [correctly installed](https://golang.org/doc/install#testing) and ideally, you should avoid installing Go in a custom location.
+2. Add the Hyperledger shim code to your Go workspace (which you set as the value of $GOPATH) by opening a command prompt or terminal and entering the following:
 
 	```
+	cd $GOPATH
 	go get github.com/hyperledger/fabric/core/chaincode/shim
 	```
+3. The [IBM Bluemix](https://console.ng.bluemix.net/) IBM Blockchain service currently requires that chaincode to be in a [GitHub](https://Github.com/) repository. Therefore, if you don't already have a GitHub account, you should [get one](http://github.com). 
+4. If you haven't got Git setup locally on your computer, you should [do that](https://help.github.com/articles/set-up-git/), as well.
 
-##GitHub Setup
-The Bluemix IBM Blockchain service currently requires chaincode to be in a [GitHub](https://Github.com/) repository.
-Therefore, you should register a GitHub account and setup Git locally on your computer. Need help? Vist [set up git](https://help.github.com/articles/set-up-git/) for more information.
-
-1. Visit [learn chaincode](https://github.com/IBM-Blockchain/learn-chaincode) and fork this repo (hint: you're already in it, just scroll up to the top and click **Fork**.)  
+## Deploying chaincode to IBM Bluemix
+1. Fork this repository to your github account (scroll up to the top and click **Fork**.)  
 2. Now clone your fork to your $GOPATH.  
-3. Notice that in this repo we have two different sets of chaincode:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the chaincode you will start building from, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the chaincode that you will ultimately build. 
+	```
+	cd $GOPATH
+	mkdir -p github.com/<yourgithubid>/
+	cd github.com/<yourgithubid>/
+	git clone https://github.com/IBM-Blockchain/learn-chaincode.git
+	```
+3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode. 
 4. Make sure it builds in your local environment:
 	- Open a terminal or command prompt
-	- Browse to the folder that contains `chaincode_start.go` and type:
-
 	```
+	cd $GOPATH/github.com/<yourgithubid>/learn-chaincode/start
 	go build ./
 	```
-	- It should return with no errors/text
+	- It should complete with no errors/text. If not, make sure that you have correctly followed all of the steps above, including [testing your install of Go](https://golang.org/doc/install#testing).
 
 
 ###Implementing the chaincode interface
@@ -216,7 +211,7 @@ We’ve included a Swagger UI in the dashboard for your service instance that al
 ###Swagger API
 The first step is to find the api swagger page.
 
-1. Login to [Bluemix](https://console.ng.bluemix.net/login)
+1. Login to [IBM Bluemix](https://console.ng.bluemix.net/login)
 1. You probably landed on the Dashboard, but double check the top nav bar.  Click the "Dashboard" tab if you are not already there.
 1. Also make sure you are in the same Bluemix "space" that contains your IBM Blockchain service. The space navigation is on the left.
 1. There is a "Services" panel on this Bluemix dashboard near the bottom.  Look through your services and click your IBM Blockchain service square.

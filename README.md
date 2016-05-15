@@ -36,15 +36,15 @@ Currently, the Hyperlegger Fabric supports chaincode written in Go. We require [
 2. Now clone your fork to your $GOPATH.  
 	```
 	cd $GOPATH
-	mkdir -p github.com/<yourgithubid>/
-	cd github.com/<yourgithubid>/
+	mkdir -p src/github.com/<yourgithubid>/
+	cd src/github.com/<yourgithubid>/
 	git clone https://github.com/IBM-Blockchain/learn-chaincode.git
 	```
 3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode. 
 4. Make sure it builds in your local environment:
 	- Open a terminal or command prompt
 	```
-	cd $GOPATH/github.com/<yourgithubid>/learn-chaincode/start
+	cd $GOPATH/src/github.com/<yourgithubid>/learn-chaincode/start
 	go build ./
 	```
 	- It should complete with no errors/text. If not, make sure that you have correctly followed all of the steps above, including [testing your install of Go](https://golang.org/doc/install#testing).

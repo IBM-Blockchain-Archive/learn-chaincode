@@ -34,6 +34,7 @@ Currently, the Hyperlegger Fabric supports chaincode written in Go. We require [
 ## Deploying chaincode to IBM Bluemix
 1. Fork this repository to your github account (scroll up to the top and click **Fork**.)  
 2. Now clone your fork to your $GOPATH.  
+
 	```
 	cd $GOPATH
 	mkdir -p src/github.com/<yourgithubid>/
@@ -43,6 +44,7 @@ Currently, the Hyperlegger Fabric supports chaincode written in Go. We require [
 3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode. 
 4. Make sure it builds in your local environment:
 	- Open a terminal or command prompt
+	
 	```
 	cd $GOPATH/src/github.com/<yourgithubid>/learn-chaincode/start
 	go build ./

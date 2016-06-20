@@ -19,7 +19,7 @@ Chaincode is a piece of code that is deployed into a network of [Hyperledger fab
 # Implementing Your First Chaincode
 
 #### Setting up the environment
-Currently, the Hyperlegger Fabric supports chaincode written in Go. We require [Go 1.6](https://blog.golang.org/go1.6). If you are already set up to develop in Go, and you have Go 1.6 installed, you may skip to step 3. If you have already set up a Hyperldger fabric [development environment](https://github.com/hyperledger/fabric/blob/master/docs/dev-setup/devenv.md), you may skip this section entirely.
+Currently, the Hyperledger Fabric supports chaincode written in Go. We require [Go 1.6](https://blog.golang.org/go1.6). If you are already set up to develop in Go, and you have Go 1.6 installed, you may skip to step 3. If you have already set up a Hyperledger fabric [development environment](https://github.com/hyperledger/fabric/blob/master/docs/dev-setup/devenv.md), you may skip this section entirely.
 
 1. Download and install Golang for your operating system at [Golang](https://golang.org/doc/install). If this is your first time installing Go, you should follow all of the instructions, including testing that it has been [correctly installed](https://golang.org/doc/install#testing) and ideally, you should avoid installing Go in a custom location.
 2. Add the Hyperledger shim code to your Go workspace (which you set as the value of $GOPATH) by opening a command prompt or terminal and entering the following:

@@ -72,7 +72,7 @@ In our example, we use Init to configure the initial state of one variable on th
 
 In your `chaincode_start.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
-```
+```go
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -99,7 +99,7 @@ It receives a `function` argument and based on this argument calls Go functions 
 
 In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
 
-```
+```go
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
@@ -117,7 +117,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 
 Now that it’s looking for `write` let’s make that function somewhere in your `chaincode_start.go` file.
 
-```
+```go
 func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var key, value string
 	var err error
@@ -148,7 +148,7 @@ You will use `Query` to read the value of your chaincode state's key/value pairs
 
 In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function.
 
-```
+```go
 func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
@@ -164,7 +164,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 
 Now that it’s looking for `read`, make that function somewhere in your `chaincode_start.go` file.
 
-```
+```go
 func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
@@ -194,7 +194,7 @@ Finally, you need to create a short `main` function that will execute when each 
 It just starts the chaincode and registers it with the peer.
 You don’t need to add any code for this function.  Both chaincode_start.go and chaincode_finished.go have a `main` function that lives at the top of the file.  The function looks like this:
 
-```
+```go
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
@@ -264,7 +264,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 - Set the `DeploySpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode repo path. Also use the same enrollID you used in the `/registrar` step.
 - The `"path":` will look something like this `"https://github.com/johndoe/learn-chaincode/finished"`.  It's the path of your fork and then one directory down, where our chaincode_finished.go file lives.
 
-	```
+	```js
 	{
 		"jsonrpc": "2.0",
 		"method": "deploy",
@@ -298,7 +298,7 @@ Next, let’s query the chaincode for the value of the `hello_world` key we set 
 - Expand the `POST /chaincode` section by clicking it
 - Set the `QuerySpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode name (the hashed ID from deploy). Also use the same enrollID you used in the `/registrar` step.
 
-	```
+	```js
 	{
 		"jsonrpc": "2.0",
 		"method": "query",
@@ -331,7 +331,7 @@ Change the value of `hello_world` to "go away".
 - Expand the `POST /chaincode` section by clicking it.
 - Set the `InvokeSpec` text field (make the other fields blank). Copy the example below but substitute in your chaincode name (the hashed ID from deploy). Also use the same enrollID you used in the `/registrar` step.
 
-	```
+	```js
 	{
 		"jsonrpc": "2.0",
 		"method": "invoke",

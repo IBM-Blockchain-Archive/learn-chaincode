@@ -39,7 +39,7 @@ Currently, the Hyperledger Fabric supports chaincode written in Go. We require [
 	cd $GOPATH
 	mkdir -p src/github.com/<yourgithubid>/
 	cd src/github.com/<yourgithubid>/
-	git clone https://github.com/IBM-Blockchain/learn-chaincode.git
+	git clone https://github.com/<yourgithubid>/learn-chaincode.git
 	```
 3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode. 
 4. Make sure it builds in your local environment:
@@ -271,7 +271,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 		"params": {
 			"type": 1,
 			"chaincodeID": {
-				"path": "https://github.com/ibm-blockchain/learn-chaincode/finished"
+				"path": "https://github.com/johndoe/learn-chaincode/finished"
 			},
 			"ctorMsg": {
 				"function": "init",

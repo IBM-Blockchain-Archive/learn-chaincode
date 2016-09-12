@@ -28,7 +28,7 @@ Currently, the Hyperledger Fabric supports chaincode written in Go. We require [
 	cd $GOPATH
 	go get github.com/hyperledger/fabric/core/chaincode/shim
 	```
-3. The [IBM Bluemix](https://console.ng.bluemix.net/) IBM Blockchain service currently requires that chaincode to be in a [GitHub](https://Github.com/) repository. Therefore, if you don't already have a GitHub account, you should [get one](http://github.com). 
+3. The [IBM Bluemix](https://console.ng.bluemix.net/) IBM Blockchain service currently requires that chaincode to be in a [GitHub](https://Github.com/) repository. Therefore, if you don't already have a GitHub account, you should [get one](http://github.com).
 4. If you haven't got Git setup locally on your computer, you should [do that](https://help.github.com/articles/set-up-git/), as well.
 
 ## Deploying chaincode to IBM Bluemix
@@ -41,10 +41,10 @@ Currently, the Hyperledger Fabric supports chaincode written in Go. We require [
 	cd src/github.com/<yourgithubid>/
 	git clone https://github.com/<yourgithubid>/learn-chaincode.git
 	```
-3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode. 
+3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](https://github.com/IBM-Blockchain/learn-chaincode/blob/master/finished/chaincode_finished.go) - the finished chaincode.
 4. Make sure it builds in your local environment:
 	- Open a terminal or command prompt
-	
+
 	```
 	cd $GOPATH/src/github.com/<yourgithubid>/learn-chaincode/start
 	go build ./
@@ -73,7 +73,7 @@ In our example, we use Init to configure the initial state of one variable on th
 In your `chaincode_start.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```go
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
@@ -100,7 +100,7 @@ It receives a `function` argument and based on this argument calls Go functions 
 In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
 
 ```go
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
@@ -118,7 +118,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 Now that it’s looking for `write` let’s make that function somewhere in your `chaincode_start.go` file.
 
 ```go
-func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
 	var err error
 	fmt.Println("running write()")
@@ -149,7 +149,7 @@ You will use `Query` to read the value of your chaincode state's key/value pairs
 In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function.
 
 ```go
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
@@ -165,7 +165,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 Now that it’s looking for `read`, make that function somewhere in your `chaincode_start.go` file.
 
 ```go
-func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 

@@ -1,3 +1,5 @@
 .project
 node_modules
 *.exe
+start/start
+finished/finished

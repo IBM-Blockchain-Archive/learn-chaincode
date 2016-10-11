@@ -2,5 +2,9 @@
 node_modules
 *.exe
 
+# compiled chaincode
+start/start
+finished/finished
+
 # IntelliJ
 .idea

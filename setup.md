@@ -83,7 +83,7 @@ Postman is a REST API testing tool.  The REST API, though it is deprecated, is a
 ### Node.js
 - [Download links](https://nodejs.org/en/download/)
 
-Node.js is NOT necessary to develop chaincode, but most of our demoes are built on Node.js, so it might be handy to go ahead and install it now.  Download the appropriate installation package and make sure the following commands work on your machine:
+Node.js is NOT necessary to develop chaincode, but most of our demos are built on Node.js, so it might be handy to go ahead and install it now.  Download the appropriate installation package and make sure the following commands work on your machine:
 ```
 $ node -v
 v4.4.7

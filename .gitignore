@@ -1,3 +1,6 @@
 .project
 node_modules
 *.exe
+
+# IntelliJ
+.idea

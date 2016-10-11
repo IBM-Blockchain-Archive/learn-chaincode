@@ -6,7 +6,7 @@ The following is a list of dependencies that you should install in order to deve
 - [Pro Git ebook](https://git-scm.com/book/en/v2)
 - [Git Desktop (for those uncomfortable with git's CLI)](https://desktop.github.com/)
 
-Git is a great version control tool to be familiar with, both for chaincode development and software development in general.  Also, git bash 
+Git is a great version control tool to be familiar with, both for chaincode development and software development in general.  Also, git bash, which is installed with git on Windows, is an excellent alternative to the the Windows command prompt.
 
 ##### Instructions
 After following the installation instructions above, you can verify that git is installed using the following command:
@@ -45,7 +45,7 @@ Any piece of chaincode that you write will need to import the chaincode shim fro
 
 ##### Instructions
 
-Three different releases of the fabric are linked above.  The release you choose above should match the Hyperledger network you are deploying your chaincode on.  You will need to make sure that the fabric release you choose is stored under `$GOPATH/hyperledger/fabric`.
+Three different releases of the fabric are linked above.  The release you choose above should match the Hyperledger```` network you are deploying your chaincode on.  You will need to make sure that the fabric release you choose is stored under `$GOPATH/hyperledger/fabric`.
 
 The instructions below should take you through the process of properly installing the v0.5 release on your `GOPATH`.
 ```
@@ -76,7 +76,7 @@ A list of known specific releases is included below
 ### Postman
 - [Home page](https://www.getpostman.com/)
 
-Postman is a REST API testing tool.  The REST API, though it is deprecated, is an easy way to iterate on deploy your chaincode without
+Postman is a REST API testing tool.  If you aren't familiar enough with the SDK 
 
 
 

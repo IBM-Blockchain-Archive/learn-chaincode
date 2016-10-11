@@ -4,8 +4,9 @@ The following is a list of dependencies that you should install in order to deve
 ### Git
 - [Git download page](https://git-scm.com/downloads)
 - [Pro Git ebook](https://git-scm.com/book/en/v2)
+- [Git Desktop (for those uncomfortable with git's CLI)](https://desktop.github.com/)
 
-Git is a great version control tool to be familiar with, both for chaincode development and software development in general.
+Git is a great version control tool to be familiar with, both for chaincode development and software development in general.  Also, git bash 
 
 ##### Instructions
 After following the installation instructions above, you can verify that git is installed using the following command:
@@ -43,17 +44,61 @@ Your `GOPATH` does not need to match the one above.  What is important is that y
 Any piece of chaincode that you write will need to import the chaincode shim from the Hyperledger fabric in order to be able to read and write data on the ledger.  To be able to compile chaincode locally, which you will be doing a lot, you will need to have the fabric code present in your `GOPATH`.
 
 ##### Instructions
-Three different releases of the fabric are linked above.  The release you choose above should match the Hyperledger network you are deploying your chaincode on.  A list of known specific releases is included below
+
+Three different releases of the fabric are linked above.  The release you choose above should match the Hyperledger network you are deploying your chaincode on.  You will need to make sure that the fabric release you choose is stored under `$GOPATH/hyperledger/fabric`.
+
+The instructions below should take you through the process of properly installing the v0.5 release on your `GOPATH`.
+```
+
+# Create the parent directories on your GOPATH
+mkdir -p $GOPATH/github.com/hyperledger
+cd $GOAPTH/github.com/hyperledger
+
+# Clone the appropriate release codebase into $GOPATH/github.com/hyperledger/fabric
+# Note that the v0.5 release is a branch of the repository
+git clone -b v0.5-developer-preview https://github.com/hyperledger-archives/fabric.git
+```
+
+If the fabric is not installed properly on your `GOPATH`, you will see errors like the one below when building your chaincode:
+```
+$ go build .
+chaincode_example02.go:27:2: cannot find package "github.com/hyperledger/fabric/core/chaincode/shim" in any of:
+        C:\Go\src\github.com\hyperledger\fabric\core\chaincode\shim (from $GOROOT)
+        C:\gopath\src\github.com\hyperledger\fabric\core\chaincode\shim (from $GOPATH)
+```
+
+A list of known specific releases is included below
 
 - [Blockchain service on Bluemix](https://new-console.ng.bluemix.net/catalog/services/blockchain/) - use the v0.5-developer-preview release
 
+
+
 ### Postman
+- [Home page](https://www.getpostman.com/)
+
+Postman is a REST API testing tool.  The REST API, though it is deprecated, is an easy way to iterate on deploy your chaincode without
 
 
 
 ### Node.js
+- [Download links](https://nodejs.org/en/download/)
+
+Node.js is NOT necessary to develop chaincode, but most of our demoes are built on Node.js, so it might be handy to go ahead and install it now.  Download the appropriate installation package and make sure the following commands work on your machine:
+```
+$ node -v
+v4.4.7
+
+$ npm -v
+3.10.5
+```
 
 ## IDE Suggestions
 ### Visual Studio Code
-##### W
+- [Download links](https://code.visualstudio.com/#alt-downloads)
+
+Visual Studio Code is a free IDE that supports both Node.js and Go through plugins.  All of our demos and examples use either one or both of these languages.  It also has tab support, git integration, and debugging support.
+
 ### Atom
+- [Home page](https://atom.io/)
+
+Like VS Code, Atom has plugins to support any of the languages needed to develop chaincode or modify our examples.

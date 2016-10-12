@@ -23,7 +23,8 @@ Chaincode is a piece of code that is deployed into a network of [Hyperledger fab
 Before you get started, you should go [here](docs/setup.md) and build your chaincode development environment.  When you come back, you'll have all the tools you need to get through this tutorial.
 
 ## Deploying chaincode to IBM Bluemix
-1. Fork this repository to your github account (scroll up to the top and click **Fork**.)  
+1. Fork this repository to your github account (scroll up to the top and click **Fork**.)
+![Register Example](imgs/fork.png)
 2. Now clone your fork to your $GOPATH.  
 
 	```

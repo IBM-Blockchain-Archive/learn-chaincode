@@ -19,17 +19,8 @@ Chaincode is a piece of code that is deployed into a network of [Hyperledger fab
 # Implementing Your First Chaincode
 
 #### Setting up the environment
-Currently, the Hyperledger Fabric supports chaincode written in Go. We require [Go 1.6](https://blog.golang.org/go1.6). If you are already set up to develop in Go, and you have Go 1.6 installed, you may skip to step 3. If you have already set up a Hyperledger fabric [development environment](https://github.com/hyperledger/fabric/blob/master/docs/dev-setup/devenv.md), you may skip this section entirely.
 
-1. Download and install Golang for your operating system at [Golang](https://golang.org/doc/install). If this is your first time installing Go, you should follow all of the instructions, including testing that it has been [correctly installed](https://golang.org/doc/install#testing) and ideally, you should avoid installing Go in a custom location.
-2. Add the Hyperledger shim code to your Go workspace (which you set as the value of $GOPATH) by opening a command prompt or terminal and entering the following:
-
-	```
-	cd $GOPATH
-	go get github.com/hyperledger/fabric/core/chaincode/shim
-	```
-3. The [IBM Bluemix](https://console.ng.bluemix.net/) IBM Blockchain service currently requires that chaincode to be in a [GitHub](https://Github.com/) repository. Therefore, if you don't already have a GitHub account, you should [get one](http://github.com). 
-4. If you haven't got Git setup locally on your computer, you should [do that](https://help.github.com/articles/set-up-git/), as well.
+Before you get started, you should go [here](docs/setup.md) and build your chaincode development environment.  When you come back, you'll have all the tools you need to get through this tutorial.
 
 ## Deploying chaincode to IBM Bluemix
 1. Fork this repository to your github account (scroll up to the top and click **Fork**.)  

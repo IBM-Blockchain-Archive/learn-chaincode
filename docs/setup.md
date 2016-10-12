@@ -16,6 +16,8 @@ $ git version
 git version 2.9.0.windows.1
 ```
 
+Once you have git installed, go create an account for yourself on [GitHub](https://Github.com/).  The IBM Blockchain service on Bluemix currently requires that chaincode be in a GitHub repository in order to be deployed through the REST API.
+
 ### Go
 - [Go 1.6 install](https://golang.org/dl/#go1.6.3)
 - [Go installation instructions](https://golang.org/doc/install)

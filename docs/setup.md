@@ -82,7 +82,7 @@ allows you to deploy and test your chaincode without needing to use the fabric S
 examples.
 
 ##### Instructions
-Go to the Postman website and download the tool.  Depending on your operating system, you may also need to install Chrome to use Postman.  Once you have the tool running, import the request collection included in this repository.  This collection contains requests for enrolling a user on a peer and deploying, invoking, and querying chaincode, which is all you should need to complete this tutorial.
+Go to the Postman website and download the tool.  Depending on your operating system, you may also need to install Chrome to use Postman.  Once you have the tool running, import the [request collection](../LearnChaincodeREST.postman_collection.json) included in this repository.  This collection contains requests for enrolling a user on a peer and deploying, invoking, and querying chaincode, which is all you should need to complete this tutorial.
 
 ### Node.js
 - [Download links](https://nodejs.org/en/download/)

@@ -60,7 +60,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 	}
 	fmt.Println("invoke did not find func: " + function)
 
-	return nil, errors.New("Received unknown function invocation")
+	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
 // Query is our entry point for queries
@@ -73,7 +73,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	}
 	fmt.Println("query did not find func: " + function)
 
-	return nil, errors.New("Received unknown function query")
+	return nil, errors.New("Received unknown function query: " + function)
 }
 
 // write - invoke function to write key/value pair

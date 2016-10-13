@@ -57,7 +57,17 @@ The following tasks take you through the process of building a pipeline that wil
 	```
 	
 	- It should complete with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
+5. Push the changes back to your fork on Github.
 
+    ```bash
+    cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
+    # Stage all changes in the local repository for commit
+    git add -all
+    # Commit all staged changes
+    git commit -m "Changed a function"
+    # Push local commits back to https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
+    git push
+    ```
 
 In order to turn a piece of Go code into chaincode, all you need to do is implement the chaincode shim interface.
 The three functions you have to implement are **Init**, **Invoke**, and **Query**.

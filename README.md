@@ -26,16 +26,16 @@ Before you get started, you should go [here](docs/setup.md) and build your chain
 
 The following tasks take you through the process of building a pipeline that will allow you to build chaincode effectively.  In short, your pipeline for iterating on chaincode will consist of the following steps:
   - Make changes to the given chaincode on your local machine and check that the code compiles.
-  - Push your updates to Github.
-  - Deploy your updated chaincode to your Hyperledger network using fabric REST API.
-  - Test your chaincode using the fabric REST API
-  - Repeat
+  - Push your updates to GitHub.
+  - Deploy your updated chaincode to your local Hyperledger network using the fabric REST API.
+  - Test your chaincode using the fabric REST API.
+  - Repeat.
 
-1. Fork this repository to your github account.  This can be accomplished quickly by scrolling up and clicking the 'Fork' button at the top of this repository.
+1. Fork this repository to your GitHub account.  This can be accomplished quickly by scrolling up and clicking the __Fork__ button at the top of this repository.
     
     ![Fork Button Screenshot](imgs/fork.png)
     
-    "Forking" the repository means creating a copy of this repository under your Github account.
+    "Forking" the repository means creating a copy of this repository under your GitHub account.
 2. Clone your fork into your $GOPATH. 
 
 	```bash
@@ -45,7 +45,7 @@ The following tasks take you through the process of building a pipeline that wil
 	git clone https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode.git
 	```
 	
-	Now, you have a copy of your fork on your machine.  You will develop your chaincode by making changes to these local files, pushing them to your fork on Github, and then deploying the code on your blockchain network using the REST API on one of your peers.
+	Now, you have a copy of your fork on your machine.  You will develop your chaincode by making changes to these local files, pushing them to your fork on GitHub, and then deploying the code onto your blockchain network using the REST API on one of your peers.
 
 3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.
 4. Make sure it builds in your local environment:
@@ -56,22 +56,24 @@ The following tasks take you through the process of building a pipeline that wil
 	go build ./
 	```
 	
-	- It should complete with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
-5. Push the changes back to your fork on Github.
+	- It should compile with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
+5. Push the changes back to your fork on GitHub.
 
     ```bash
     cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
+    # See what files have changed locally.  You should see chaincode_start.go
+    git status
     # Stage all changes in the local repository for commit
     git add -all
-    # Commit all staged changes
-    git commit -m "Changed a function"
+    # Commit all staged changes.  Insert a short description after the -m argument
+    git commit -m "Compiled my code"
     # Push local commits back to https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
     git push
     ```
 
 In order to turn a piece of Go code into chaincode, all you need to do is implement the chaincode shim interface.
 The three functions you have to implement are **Init**, **Invoke**, and **Query**.
-All three functions have the same prototype; they take in a 'stub', which is what you use to read from and write to the ledger, a function name and an array of strings.
+All three functions have the same prototype; they take in a 'stub', which is what you use to read from and write to the ledger, a function name, and an array of strings.
 The main difference between the functions is when they will be called.
 In this tutorial you will be building a chaincode to create generic assets.
 
@@ -84,9 +86,9 @@ The `import` statement lists a few dependencies that you will need for your chai
 ###Init()
 Init is called when you first deploy your chaincode.
 As the name implies, this function should be used to do any initialization your chaincode needs.
-In our example, we use Init to configure the initial state of a single key value pair on the ledger.
+In our example, we use Init to configure the initial state of a single key/value pair on the ledger.
 
-In your `chaincode_start.go` file,  change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
+In your `chaincode_start.go` file, change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```go
 func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
@@ -153,7 +155,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 }
 ```
 
-You're probably thinking that this `write` function looks similar to `Init`.  It is very similar.  Both function check for a certain number of arguments and then write a key value pair to the ledger.
+You're probably thinking that this `write` function looks similar to `Init`.  It is very similar.  Both functions check for a certain number of arguments, and then write a key/value pair to the ledger.
 However, you'll notice that `write` uses two arguments, allowing you to pass in both the key and the value for the call to `PutState`.
 Basically, this function allows you to store any key/value pair you want into the blockchain ledger.  
 
@@ -200,7 +202,7 @@ func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte,
 }
 ```
 
-This `read` function is using the complement to `PutState` called `GetState`.  While `PutState` allows you to set a key value pair, `GetState` lets you read the value for a previously written key.
+This `read` function is using the complement to `PutState` called `GetState`.  While `PutState` allows you to set a key/value pair, `GetState` lets you read the value for a previously written key.
 You can see that the single argument used by this function is taken as the key for the value that should be retrieved.
 Next, this function returns the value as an array of bytes back to `Query`, who in turn sends it back to the REST handler.
 
@@ -222,16 +224,16 @@ func main() {
 If you're stuck or confused at any point, just go check out the `chaincode_finished.go` file.  Use this file to validate that the code snippets you're building into chaincode_start.go are correct.  
 
 #Interacting with Your First Chaincode
-The fastest way to test your chaincode is to use the rest interface on your peers.
+The fastest way to test your chaincode is to use the REST interface on your peers.
 If you're using the blockchain service on Bluemix, you should follow the steps described [here](https://new-console.ng.bluemix.net/docs/services/blockchain/ibmblockchain_tutorials.html).  Otherwise, we recommend using a tool like Postman, as described in the [environment setup documentation](docs/setup.md).
-There are two rest endpoints we will be interacting with: `/chaincode` and `/registrar`.
+There are two REST endpoints we will be interacting with: `/chaincode` and `/registrar`.
   - `/chaincode` is the endpoint used for deploying, invoking, and querying chaincode.  Which operation you perform is controlled by the body of the request that you send.
   - `/registrar` allows you to enroll users.  Why does this matter?  Read on!
 
 ### Secure Enrollment
-Calls to the `/chaincode` endpoint of the rest interface require a secure context ID to be included in the body of the request.
+Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request.
 This means that you must first enroll a user from the user list in the membership service for your network.
-- Find an available user to enroll on one of your peers.  This will most likely require you to grab a user from the `membersrvc.yaml` file for your network.  Look for the section that has a list of users like this:
+- Find an available user to enroll on one of your peers.  This will most likely require you to grab a user from the [membersrvc.yaml](fabric/membersrvc/membersrvc.yaml) file for your network.  Look for the section that has a list of users like this:
  
   ```
   ...
@@ -251,7 +253,7 @@ This means that you must first enroll a user from the user list in the membershi
   
   ![/registrar POST](imgs/registrar_post.png)
   
-  The url indicates that the REST port for one of my peers is accessible at `b88037dd5b6d423caf5258c6b7b15f5a-vp3.dev.blockchain.ibm.com:443`
+ The url indicates that the REST port for one of my Bluemix peers is accessible at `b88037dd5b6d423caf5258c6b7b15f5a-vp3.dev.blockchain.ibm.com:443`.  This is the api URL for vp3.  You would find this information on the **Service Credentials** tab of the Blockchain dashboard or the __Network__ tab of your Bluemix console.  This specific registration is being sent to vp3, but it could be directed at any network peer.
 - The body for the request:
   
   ```json
@@ -263,7 +265,7 @@ This means that you must first enroll a user from the user list in the membershi
 
 - Send the request.  If everything goes smoothly, you will see a response like the one below
   
-  ![/registrar response](imgs/registrar_post_response.PNG)
+  ![/registrar response](imgs/registrar_post_response.png)
   
   If you didn't receive a "Login successful" response, go back and make sure you properly copied your enrollment ID and secret.  Now, you have an ID that you can use when deploying, invoking, and querying chaincode in the subsequent steps.
 
@@ -272,7 +274,7 @@ In order to deploy chaincode through the REST interface, you will need to have t
 When you send a deploy request to a peer, you send it the url to your chaincode repository, as well as the parameters necessary to initialize the chaincode.
 
 **Before you deploy** the code, make sure it builds locally!
-- Open terminal/command prompt
+- Open a terminal
 - Browse to the folder that contains `chaincode_start.go` and try to build your chaincode:
 
 	```bash
@@ -284,7 +286,9 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
 
 - Create a POST request like the example below.
   
-  ![/chaincode deploy example](imgs/deploy_example.png)
+  ![/chaincode deploy example](imgs/deploy_example.PNG)
+  
+- **Note**: Be sure to issue your deployment to same peer on which you enrolled your user.  In this scenario, it is vp3.
 
 - The body for the request:
   
@@ -315,14 +319,14 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
   ![/chaincode deploy response](imgs/deploy_response.PNG)
   
 The long string response for the deployment will contain an ID that is associated with this chaincode.  The ID is a 128 character alphanumeric hash.  Copy this ID on your notepad as well.  You should now have a set of enrollID credentials and the cryptographic hash representing your chaincode.
-This is how you will reference the chaincode in any future invoke or query requests.
+This is how you will reference the chaincode in any future Invoke or Query transactions.
 
 ### Query
 
 Next, let’s query the chaincode for the value of `hello_world`, the key we set with the `Init` function.
 - Create a POST request like the example below.
   
-  ![/chaincode query example](imgs/query_example.png)
+  ![/chaincode query example](imgs/query_example.PNG)
   
 - The body for the request:
   
@@ -355,10 +359,10 @@ Hopefully you see that the value of `hello_world` is "hi there", as you specifie
 
 ### Invoke
 
-Next, call your generic `write` function by invoking your chaincode, changing the value of `hello_world` to "go away".
+Next, call your generic `write` function by invoking your chaincode and changing the value of "hello_world" to "go away".
 - Create a POST request like the example below.
 
-  ![/chaincode invoke example](imgs/invoke_example.png)
+  ![/chaincode invoke example](imgs/invoke_example.PNG)
   
 - The body for the request:
 
@@ -383,7 +387,7 @@ Next, call your generic `write` function by invoking your chaincode, changing th
   }
   ```
 
-- Send the request.  If everything goes smoothly, you will see a response like the one below
+- Send the request.  If everything goes smoothly, you will see a response like the one below:
   
   ![/chaincode invoke response](imgs/invoke_response.PNG)
 

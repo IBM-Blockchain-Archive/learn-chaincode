@@ -1,5 +1,14 @@
+# NOTE
+There are multiple releases of the Hyperledger fabric out in the wild that have small differences for how your chaincode must be written.  Before proceeding, make sure to select the branch of this tutorial that corresponds to the release of the fabric you are using for your network.  You can select the branch using the drop-down menu above.
+    
+![Branch Menu](imgs/branches.png)
+
+Not sure which branch you should be using?  See which branch describes your situation the best.
+- `v1`: The example chaincode is written against the shim interface from the `v0.5-developer-preview` release of the Hyperledger fabric.  This is the same release that is used in the blockchain service on Bluemix.
+- `v2`: The example chaincode is written against the shim interface from the `v0.6` release of the Hyperledger fabric.
+
 # How to write chaincode
-This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary [Hyperledger fabric](https://github.com/hyperledger/fabric) chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
+This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary [Hyperledger fabric](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
 Then, you will interact with the chaincode by using the network's API. After reading and completing this tutorial, you should be able to explicitly answer the following questions:
 - What is chaincode?
 - How do I implement the chaincode?
@@ -12,7 +21,7 @@ Then, you will interact with the chaincode by using the network's API. After rea
 
 
 ## What is chaincode?
-Chaincode is a piece of code that is deployed into a network of [Hyperledger fabric](https://github.com/hyperledger/fabric) peer nodes that enables interaction with that network's shared ledger.  
+Chaincode is a piece of code that is deployed into a network of [Hyperledger fabric](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) peer nodes that enables interaction with that network's shared ledger.  
 
 ***
 

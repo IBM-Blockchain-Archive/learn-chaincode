@@ -117,7 +117,7 @@ In our example, we use Init to configure the initial state of a single key/value
 In your `chaincode_start.go` file, change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```go
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
@@ -144,7 +144,7 @@ It receives a `function` and an array of arguments.  Based on what function was 
 In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
 
 ```go
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
@@ -162,7 +162,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 Now that it’s looking for `write` let’s make that function somewhere in your `chaincode_start.go` file.
 
 ```go
-func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
 	var err error
 	fmt.Println("running write()")
@@ -193,7 +193,7 @@ You will use `Query` to read the value of your chaincode state's key/value pairs
 In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function, similar to what you did in `Invoke`.
 
 ```go
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
@@ -209,7 +209,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 Now that it’s looking for `read`, let's create that helper function somewhere in your `chaincode_start.go` file.
 
 ```go
-func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 

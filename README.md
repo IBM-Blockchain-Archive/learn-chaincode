@@ -1,11 +1,26 @@
-# NOTE
-There are multiple releases of the Hyperledger fabric out in the wild that have small differences for how your chaincode must be written.  Before proceeding, make sure to select the branch of this tutorial that corresponds to the release of the fabric you are using for your network.  You can select the branch using the drop-down menu above.
-    
-![Branch Menu](imgs/branches.png)
+# Learn Chaincode
 
-Not sure which branch you should be using?  See which branch describes your situation the best.
-- `v1`: The example chaincode is written against the shim interface from the `v0.5-developer-preview` release of the Hyperledger fabric.  This is the same release that is used in the blockchain service on Bluemix.
-- `v2`: The example chaincode is written against the shim interface from the `v0.6` release of the Hyperledger fabric.
+A tutorial to get you started with writing smart contracts for Hyperledger.
+
+# Deployment
+
+In order to support multiple versions of the Hyperledger fabric, this repository uses branches in combination with gopkg.in URLs.  What does this mean for beginners? Just pick the branch below and use the instructions for that branch to complete the tutorial
+
+##### Versions and Supported Platforms
+
+- [v1.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v1.0)
+    - Hyperledger fabric v0.5-developer-preview
+    - IBM Bluemix Blockchain Service v0.4.2
+- [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0) (Coming Soon)
+    - Hyperledger fabric v0.6-developer-preview
+    
+If you'd like to just deploy the sample code without completing the tutorial, then use the following URLs for the path parameter when deploying via the fabric REST API.  Choose the URL that corresponds to the branch you are using above.
+
+```
+http://gopkg.in/ibm-blockchain/learn-chaincode.v1/finished
+OR
+http://gopkg.in/ibm-blockchain/learn-chaincode.v2/finished
+```
 
 # How to write chaincode
 This tutorial demonstrates the basic building blocks and functionality necessary to build an elementary [Hyperledger fabric](https://gerrit.hyperledger.org/r/#/admin/projects/fabric) chaincode application. You will be incrementally building up to a working chaincode that will be able to create generic assets.
@@ -53,6 +68,8 @@ The following tasks take you through the process of building a pipeline that wil
 	cd src/github.com/<YOUR_GITHUB_ID_HERE>/
 	git clone https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode.git
 	```
+	
+	Next, we wan
 	
 	Now, you have a copy of your fork on your machine.  You will develop your chaincode by making changes to these local files, pushing them to your fork on GitHub, and then deploying the code onto your blockchain network using the REST API on one of your peers.
 

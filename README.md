@@ -11,7 +11,7 @@ In order to support multiple versions of the Hyperledger fabric, this repository
 - [v1.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v1.0)
     - Hyperledger fabric v0.5-developer-preview
     - IBM Bluemix Blockchain Service v0.4.2
-- [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0) (Coming Soon)
+- [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0)
     - Hyperledger fabric v0.6-developer-preview
     
 If you'd like to just deploy the sample code without completing the tutorial, then use the following URLs for the path parameter when deploying via the fabric REST API.  Choose the URL that corresponds to the branch you are using above.

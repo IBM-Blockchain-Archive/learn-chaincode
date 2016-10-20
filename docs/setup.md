@@ -61,6 +61,13 @@ cd $GOAPTH/github.com/hyperledger
 git clone -b v0.5-developer-preview https://github.com/hyperledger-archives/fabric.git
 ```
 
+If you are installing the v0.6 release, use this for your `git clone` command:
+
+```
+# The v0.6 release exists as a branch inside the Gerrit fabric repository
+git clone -b v0.6 http://gerrit.hyperledger.org/r/fabric
+```
+
 If the fabric is not installed properly on your `GOPATH`, you will see errors like the one below when building your chaincode:
 ```
 $ go build .

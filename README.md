@@ -69,8 +69,6 @@ The following tasks take you through the process of building a pipeline that wil
 	git clone https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode.git
 	```
 	
-	Next, we wan
-	
 	Now, you have a copy of your fork on your machine.  You will develop your chaincode by making changes to these local files, pushing them to your fork on GitHub, and then deploying the code onto your blockchain network using the REST API on one of your peers.
 
 3. Notice that we have provided two different versions of the chaincode used in this tutorial:  [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.

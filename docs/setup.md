@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Chaincode Development Environment
 
 The following is a list of dependencies and recommended tools that you should install in order to develop chaincode.
@@ -68,8 +69,14 @@ cd $GOAPTH/src/github.com/hyperledger
 git clone -b v0.5-developer-preview https://github.com/hyperledger-archives/fabric.git
 ```
 
-If the fabric is not installed properly on your `GOPATH`, you will see errors like the one below when building your chaincode:
+If you are installing the v0.6 release, use this for your `git clone` command:
 
+```
+# The v0.6 release exists as a branch inside the Gerrit fabric repository
+git clone -b v0.6 http://gerrit.hyperledger.org/r/fabric
+```
+
+If the fabric is not installed properly on your `GOPATH`, you will see errors like the one below when building your chaincode:
 ```
 $ go build .
 chaincode_example02.go:27:2: cannot find package "github.com/hyperledger/fabric/core/chaincode/shim" in any of:

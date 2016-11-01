@@ -125,16 +125,10 @@ Init is called when you first deploy your chaincode. As the name implies, this f
 In your `chaincode_start.go` file, change the `Init` function so that it stores the first element in the `args` argument to the key "hello_world".
 
 ```go
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-    if len(args) != 1 {
-        return nil, errors.New("Incorrect number of arguments. Expecting 1")
-    }
-=======
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
->>>>>>> 4fea23b9bedde404858f7ee58cd33f2f7433dd4b
 
     err := stub.PutState("hello_world", []byte(args[0]))
     if err != nil {
@@ -146,27 +140,16 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 ```
 
 This is done by using the stub function `stub.PutState`. The function interprets the first argument sent in the deployment request as the value to be stored under the key 'hello_world' in the ledger. Where did this argument come from, and what is a deploy request? All will be explained after we finish implementing the chaincode interface. If an error occurs because the wrong number of arguments was passed in or because something went wrong when writing to the ledger, then this function will return an error. Otherwise, it exits cleanly, returning nothing.
-<<<<<<< HEAD
 
 ### Invoke()
 
-=======
-
-### Invoke()
-
->>>>>>> 87d7fc6... Fixed a few of the paths to include 'src', and added the branching option to the 'git clone'
 `Invoke` is called when you want to call chaincode functions to do real work. Invocations will be captured as a transactions, which get grouped into blocks on the chain. When you need to update the ledger, you will do so by invoking your chaincode. The structure of `Invoke` is simple. It receives a `function` and an array of arguments. Based on what function was passed in through the `function` parameter in the invoke request, `Invoke` will either call a helper function or return an error.
 
 In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
 
 ```go
-<<<<<<< HEAD
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-    fmt.Println("invoke is running " + function)
-=======
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
->>>>>>> 4fea23b9bedde404858f7ee58cd33f2f7433dd4b
 
     // Handle different functions
     if function == "init" {
@@ -183,24 +166,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 Now that it's looking for `write` let's make that function somewhere in your `chaincode_start.go` file.
 
 ```go
-<<<<<<< HEAD
-func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-    var key, value string
-    var err error
-    fmt.Println("running write()")
-
-    if len(args) != 2 {
-        return nil, errors.New("Incorrect number of arguments. Expecting 2\. name of the key and value to set")
-    }
-
-    key = args[0]                            //rename for fun
-    value = args[1]
-    err = stub.PutState(key, []byte(value))  //write the variable into the chaincode state
-    if err != nil {
-        return nil, err
-    }
-    return nil, nil
-=======
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
 	var err error
@@ -217,32 +182,20 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		return nil, err
 	}
 	return nil, nil
->>>>>>> 4fea23b9bedde404858f7ee58cd33f2f7433dd4b
 }
 ```
 
 You're probably thinking that this `write` function looks similar to `Init`. It is very similar. Both functions check for a certain number of arguments, and then write a key/value pair to the ledger. However, you'll notice that `write` uses two arguments, allowing you to pass in both the key and the value for the call to `PutState`. Basically, this function allows you to store any key/value pair you want into the blockchain ledger.
-<<<<<<< HEAD
 
 ### Query()
 
-=======
-
-### Query()
-
->>>>>>> 87d7fc6... Fixed a few of the paths to include 'src', and added the branching option to the 'git clone'
 As the name implies, `Query` is called whenever you query your chaincode's state. Queries do not result in blocks being added to the chain, and you cannot use functions like `PutState` inside of `Query` or any helper functions it calls. You will use `Query` to read the value of your chaincode state's key/value pairs.
 
 In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function, similar to what you did in `Invoke`.
 
 ```go
-<<<<<<< HEAD
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-    fmt.Println("query is running " + function)
-=======
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
->>>>>>> 4fea23b9bedde404858f7ee58cd33f2f7433dd4b
 
     // Handle different functions
     if function == "read" {                            //read a variable

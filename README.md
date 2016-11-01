@@ -247,20 +247,19 @@ func main() {
 ```
 
 ### Need Help?
-If you're stuck or confused at any point, just go check out the `chaincode_finished.go` file.  Use this file to validate that the code snippets you're building into chaincode_start.go are correct.  
 
-#Interacting with Your First Chaincode
-The fastest way to test your chaincode is to use the REST interface on your peers.
-If you're using the blockchain service on Bluemix, you should follow the steps described [here](https://new-console.ng.bluemix.net/docs/services/blockchain/ibmblockchain_tutorials.html).  Otherwise, we recommend using a tool like Postman, as described in the [environment setup documentation](docs/setup.md).
-There are two REST endpoints we will be interacting with: `/chaincode` and `/registrar`.
-  - `/chaincode` is the endpoint used for deploying, invoking, and querying chaincode.  Which operation you perform is controlled by the body of the request that you send.
-  - `/registrar` allows you to enroll users.  Why does this matter?  Read on!
+If you're stuck or confused at any point, just go check out the `chaincode_finished.go` file. Use this file to validate that the code snippets you're building into chaincode_start.go are correct. 
+
+# Interacting with Your First Chaincode
+The fastest way to test your chaincode is to use the REST interface on your peers. If you're using the blockchain service on Bluemix, you should follow the steps described [here](https://new-console.ng.bluemix.net/docs/services/blockchain/ibmblockchain_tutorials.html). Otherwise, we recommend using a tool like Postman, as described in the [environment setup documentation](docs/setup.md). There are two REST endpoints we will be interacting with: `/chaincode` and `/registrar`.
+  - `/chaincode` is the endpoint used for deploying, invoking, and querying chaincode. Which operation you perform is controlled by the body of the request that you send.
+  - `/registrar` allows you to enroll users. Why does this matter? Read on!
 
 ### Secure Enrollment
-Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request.
-This means that you must first enroll a user from the user list in the membership service for your network.
-- Find an available user to enroll on one of your peers.  This will most likely require you to grab a user from the [membersrvc.yaml](fabric/membersrvc/membersrvc.yaml) file for your network.  Look for the section that has a list of users like this:
- 
+Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request. This means that you must first enroll a user from the user list in the membership service for your network.
+
+- Find an available user to enroll on one of your peers. This will most likely require you to grab a user from the [membersrvc.yaml](fabric/membersrvc/membersrvc.yaml) file for your network. Look for the section that has a list of users like this:
+
   ```
   ...
   test_user0: 1 MS9qrN8hFjlE bank_a        00001
@@ -295,9 +294,11 @@ This means that you must first enroll a user from the user list in the membershi
   
   If you didn't receive a "Login successful" response, go back and make sure you properly copied your enrollment ID and secret.  Now, you have an ID that you can use when deploying, invoking, and querying chaincode in the subsequent steps.
 
+  If you didn't receive a "Login successful" response, go back and make sure you properly copied your enrollment ID and secret. Now, you have an ID that you can use when deploying, invoking, and querying chaincode in the subsequent steps.
+
 ### Deploying the chaincode
-In order to deploy chaincode through the REST interface, you will need to have the chaincode stored in a public git repository.
-When you send a deploy request to a peer, you send it the url to your chaincode repository, as well as the parameters necessary to initialize the chaincode.
+
+In order to deploy chaincode through the REST interface, you will need to have the chaincode stored in a public git repository. When you send a deploy request to a peer, you send it the url to your chaincode repository, as well as the parameters necessary to initialize the chaincode.
 
 **Before you deploy** the code, make sure it builds locally!
 - Open a terminal
@@ -344,8 +345,7 @@ When you send a deploy request to a peer, you send it the url to your chaincode 
   
   ![/chaincode deploy response](imgs/deploy_response.PNG)
   
-The long string response for the deployment will contain an ID that is associated with this chaincode.  The ID is a 128 character alphanumeric hash.  Copy this ID on your notepad as well.  You should now have a set of enrollID credentials and the cryptographic hash representing your chaincode.
-This is how you will reference the chaincode in any future Invoke or Query transactions.
+The long string response for the deployment will contain an ID that is associated with this chaincode. The ID is a 128 character alphanumeric hash. Copy this ID on your notepad as well. You should now have a set of enrollID credentials and the cryptographic hash representing your chaincode. This is how you will reference the chaincode in any future Invoke or Query transactions.
 
 ### Query
 

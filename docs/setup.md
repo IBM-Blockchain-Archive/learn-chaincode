@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Chaincode Development Environment
 
 The following is a list of dependencies and recommended tools that you should install in order to develop chaincode.

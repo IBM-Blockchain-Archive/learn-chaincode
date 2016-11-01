@@ -255,7 +255,7 @@ The fastest way to test your chaincode is to use the REST interface on your peer
 - `/chaincode` is the endpoint used for deploying, invoking, and querying chaincode. Which operation you perform is controlled by the body of the request that you send.
 - `/registrar` allows you to enroll users. Why does this matter? Read on!
 
-## Secure Enrollment
+### Secure Enrollment
 
 Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request. This means that you must first enroll a user from the user list in the membership service for your network.
 
@@ -296,7 +296,7 @@ Calls to the `/chaincode` endpoint of the REST interface require a secure contex
 
   If you didn't receive a "Login successful" response, go back and make sure you properly copied your enrollment ID and secret. Now, you have an ID that you can use when deploying, invoking, and querying chaincode in the subsequent steps.
 
-## Deploying the chaincode
+### Deploying the chaincode
 
 In order to deploy chaincode through the REST interface, you will need to have the chaincode stored in a public git repository. When you send a deploy request to a peer, you send it the url to your chaincode repository, as well as the parameters necessary to initialize the chaincode.
 
@@ -349,7 +349,7 @@ In order to deploy chaincode through the REST interface, you will need to have t
 
 The long string response for the deployment will contain an ID that is associated with this chaincode. The ID is a 128 character alphanumeric hash. Copy this ID on your notepad as well. You should now have a set of enrollID credentials and the cryptographic hash representing your chaincode. This is how you will reference the chaincode in any future Invoke or Query transactions.
 
-## Query
+### Query
 
 Next, let's query the chaincode for the value of `hello_world`, the key we set with the `Init` function.
 
@@ -386,7 +386,7 @@ Next, let's query the chaincode for the value of `hello_world`, the key we set w
 
 Hopefully you see that the value of `hello_world` is "hi there", as you specified in the body of the deploy request.
 
-## Invoke
+### Invoke
 
 Next, call your generic `write` function by invoking your chaincode and changing the value of "hello_world" to "go away".
 

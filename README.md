@@ -60,7 +60,7 @@ The following tasks take you through the process of building a pipeline that wil
 - Test your chaincode using the fabric REST API.
 - Repeat.
 
-- Fork this repository to your GitHub account. This can be accomplished quickly by scrolling up and clicking the **Fork** button at the top of this repository.
+1. Fork this repository to your GitHub account. This can be accomplished quickly by scrolling up and clicking the **Fork** button at the top of this repository.
 
   ![Fork Button Screenshot](imgs/fork.png)
 
@@ -68,7 +68,7 @@ The following tasks take you through the process of building a pipeline that wil
 
   ![Branch Button Screenshot](imgs/branch.png)
 
-- Clone your fork into your $GOPATH.
+2. Clone your fork into your $GOPATH.
 
   ```bash
   cd $GOPATH
@@ -76,14 +76,14 @@ The following tasks take you through the process of building a pipeline that wil
   cd src/github.com/<YOUR_GITHUB_ID_HERE>/
   git clone -b v1.0 https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode.git
   OR
-  git clone -b v2.0 https://github.com/<YOUR_GITHUB_ID_HERE>/learn-cahincode.git
+  git clone -b v2.0 https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode.git
   ```
 
   Now, you have a copy of your fork on your machine. You will develop your chaincode by making changes to these local files, pushing them to your fork on GitHub, and then deploying the code onto your blockchain network using the REST API on one of your peers.
 
-- Notice that we have provided two different versions of the chaincode used in this tutorial: [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.
+3. Notice that we have provided two different versions of the chaincode used in this tutorial: [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.
 
-- Make sure it builds in your local environment:
+4. Make sure it builds in your local environment:
 
   - Open a terminal or command prompt
 
@@ -94,7 +94,7 @@ The following tasks take you through the process of building a pipeline that wil
 
   - It should compile with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
 
-- Push the changes back to your fork on GitHub.
+5. Push the changes back to your fork on GitHub.
 
   ```bash
   cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
@@ -106,7 +106,6 @@ The following tasks take you through the process of building a pipeline that wil
   git commit -m "Compiled my code"
   # Push local commits back to https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
   git push
-  ```
 
 In order to turn a piece of Go code into chaincode, all you need to do is implement the chaincode shim interface. The three functions you have to implement are **Init**, **Invoke**, and **Query**. All three functions have the same prototype; they take in a 'stub', which is what you use to read from and write to the ledger, a function name, and an array of strings. The main difference between the functions is when they will be called. In this tutorial you will be building a chaincode to create generic assets.
 
@@ -140,9 +139,15 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 ```
 
 This is done by using the stub function `stub.PutState`. The function interprets the first argument sent in the deployment request as the value to be stored under the key 'hello_world' in the ledger. Where did this argument come from, and what is a deploy request? All will be explained after we finish implementing the chaincode interface. If an error occurs because the wrong number of arguments was passed in or because something went wrong when writing to the ledger, then this function will return an error. Otherwise, it exits cleanly, returning nothing.
+<<<<<<< HEAD
 
 ### Invoke()
 
+=======
+
+### Invoke()
+
+>>>>>>> 87d7fc6... Fixed a few of the paths to include 'src', and added the branching option to the 'git clone'
 `Invoke` is called when you want to call chaincode functions to do real work. Invocations will be captured as a transactions, which get grouped into blocks on the chain. When you need to update the ledger, you will do so by invoking your chaincode. The structure of `Invoke` is simple. It receives a `function` and an array of arguments. Based on what function was passed in through the `function` parameter in the invoke request, `Invoke` will either call a helper function or return an error.
 
 In your `chaincode_start.go` file, change the `Invoke` function so that it calls a generic write function.
@@ -186,9 +191,15 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 ```
 
 You're probably thinking that this `write` function looks similar to `Init`. It is very similar. Both functions check for a certain number of arguments, and then write a key/value pair to the ledger. However, you'll notice that `write` uses two arguments, allowing you to pass in both the key and the value for the call to `PutState`. Basically, this function allows you to store any key/value pair you want into the blockchain ledger.
+<<<<<<< HEAD
 
 ### Query()
 
+=======
+
+### Query()
+
+>>>>>>> 87d7fc6... Fixed a few of the paths to include 'src', and added the branching option to the 'git clone'
 As the name implies, `Query` is called whenever you query your chaincode's state. Queries do not result in blocks being added to the chain, and you cannot use functions like `PutState` inside of `Query` or any helper functions it calls. You will use `Query` to read the value of your chaincode state's key/value pairs.
 
 In your `chaincode_start.go` file, change the `Query` function so that it calls a generic read function, similar to what you did in `Invoke`.

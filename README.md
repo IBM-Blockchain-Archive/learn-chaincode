@@ -60,13 +60,15 @@ The following tasks take you through the process of building a pipeline that wil
 - Test your chaincode using the fabric REST API.
 - Repeat.
 
-1. Fork this repository to your GitHub account. This can be accomplished quickly by scrolling up and clicking the **Fork** button at the top of this repository.
+- Fork this repository to your GitHub account. This can be accomplished quickly by scrolling up and clicking the **Fork** button at the top of this repository.
 
   ![Fork Button Screenshot](imgs/fork.png)
 
-  "Forking" the repository means creating a copy of this repository under your GitHub account.
+  "Forking" the repository means creating a copy of this repository under your GitHub account. Note that the fork will fork the entire repository including all the branches. Toggle the **Branch** button on the left to see the available branches.
 
-2. Clone your fork into your $GOPATH.
+  ![Branch Button Screenshot](imgs/branch.png)
+
+- Clone your fork into your $GOPATH.
 
   ```bash
   cd $GOPATH
@@ -79,9 +81,9 @@ The following tasks take you through the process of building a pipeline that wil
 
   Now, you have a copy of your fork on your machine. You will develop your chaincode by making changes to these local files, pushing them to your fork on GitHub, and then deploying the code onto your blockchain network using the REST API on one of your peers.
 
-3. Notice that we have provided two different versions of the chaincode used in this tutorial: [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.
+- Notice that we have provided two different versions of the chaincode used in this tutorial: [Start](start/chaincode_start.go) - the skeleton chaincode from which you will start developing, and [Finished](finished/chaincode_finished.go) - the finished chaincode.
 
-4. Make sure it builds in your local environment:
+- Make sure it builds in your local environment:
 
   - Open a terminal or command prompt
 
@@ -92,18 +94,18 @@ The following tasks take you through the process of building a pipeline that wil
 
   - It should compile with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
 
-5. Push the changes back to your fork on GitHub.
+- Push the changes back to your fork on GitHub.
 
   ```bash
-   cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
-   # See what files have changed locally.  You should see chaincode_start.go
-   git status
-   # Stage all changes in the local repository for commit
-   git add -all
-   # Commit all staged changes.  Insert a short description after the -m argument
-   git commit -m "Compiled my code"
-   # Push local commits back to https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
-   git push
+  cd $GOPATH/src/github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
+  # See what files have changed locally.  You should see chaincode_start.go
+  git status
+  # Stage all changes in the local repository for commit
+  git add -all
+  # Commit all staged changes.  Insert a short description after the -m argument
+  git commit -m "Compiled my code"
+  # Push local commits back to https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/
+  git push
   ```
 
 In order to turn a piece of Go code into chaincode, all you need to do is implement the chaincode shim interface. The three functions you have to implement are **Init**, **Invoke**, and **Query**. All three functions have the same prototype; they take in a 'stub', which is what you use to read from and write to the ledger, a function name, and an array of strings. The main difference between the functions is when they will be called. In this tutorial you will be building a chaincode to create generic assets.

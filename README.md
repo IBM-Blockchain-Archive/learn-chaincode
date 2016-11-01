@@ -112,7 +112,6 @@ In order to turn a piece of Go code into chaincode, all you need to do is implem
 
 ### Dependencies
 
->>>>>>> 4fea23b9bedde404858f7ee58cd33f2f7433dd4b
 The `import` statement lists a few dependencies that you will need for your chaincode to build successfully.
 
 - `fmt` - contains `Println` for debugging/logging.

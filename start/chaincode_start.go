@@ -17,6 +17,7 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -27,13 +28,21 @@ import (
 type SimpleChaincode struct {
 }
 
+// Patient structure
+type Patient struct {
+	Name     string `json:"name"`
+	MemberID string `json:"memberid"`
+	DOB      string `json:"dob"`
+	DOR      string `json:"dor"`
+}
+
 // ============================================================================================================================
 // Main
 // ============================================================================================================================
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
-		fmt.Printf("Error starting Simple chaincode: %s", err)
+		fmt.Printf("Error starting preAuth chaincode: %s", err)
 	}
 }
 
@@ -42,19 +51,22 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-
 	return nil, nil
 }
 
 // Invoke is our entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
+	fmt.Println(args)
 
 	// Handle different functions
-	if function == "init" {													//initialize the chaincode state, used as reset
+	if function == "init" {
 		return t.Init(stub, "init", args)
+	} else if function == "write" {
+		return t.write(stub, args)
+	} else if function == "read" {
+		return t.read(stub, args)
 	}
-	fmt.Println("invoke did not find func: " + function)					//error
 
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
@@ -64,11 +76,68 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
-	if function == "dummy_query" {											//read a variable
-		fmt.Println("hi there " + function)						//error
-		return nil, nil;
+	if function == "read" { //read a variable
+		fmt.Println("hi there " + function) //error
+		//return nil, nil;
+		return t.read(stub, args)
 	}
-	fmt.Println("query did not find func: " + function)						//error
+	fmt.Println("query did not find func: " + function) //error
 
 	return nil, errors.New("Received unknown function query: " + function)
+}
+
+func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	if len(args) != 4 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 4")
+	}
+
+	pt := Patient{args[0], args[1], args[2], args[3]}
+
+	fmt.Println("- start patient details with " + pt.Name + " - " + pt.MemberID + " - " + " - " + pt.DOB + " - " + pt.DOR)
+	jsonAsBytes, _ := json.Marshal(pt)
+	fmt.Printf("%+v\n", string(jsonAsBytes))
+
+	err := stub.PutState("PT001", jsonAsBytes)
+
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	var name, jsonResp string
+	var err error
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting name of the var to query")
+	}
+
+	name = args[0]
+	fmt.Println("value received in read is : " + name)
+
+	valAsbytes, err := stub.GetState(name)
+	if err != nil {
+		jsonResp = "{\"Error\":\"Failed to get state for " + name + "\"}"
+		return nil, errors.New(jsonResp)
+	}
+
+	var p Patient
+	json.Unmarshal(valAsbytes, &p)
+	fmt.Printf("%+v\n", p)
+
+	return valAsbytes, nil
+}
+
+//Test
+func (p *Patient) UnmarshalJSON(buf []byte) error {
+	tmp := []interface{}{&p.Name, &p.MemberID, &p.DOB, &p.DOR}
+	wantLen := len(tmp)
+	if err := json.Unmarshal(buf, &tmp); err != nil {
+		return err
+	}
+	if g, e := len(tmp), wantLen; g != e {
+		return fmt.Errorf("wrong number of fields in Notification: %d != %d", g, e)
+	}
+	return nil
 }

@@ -259,7 +259,7 @@ The fastest way to test your chaincode is to use the REST interface on your peer
 
 Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request. This means that you must first enroll a user from the user list in the membership service for your network.
 
-- Find an available user to enroll on one of your peers. This will most likely require you to grab a user from the [membersrvc.yaml](fabric/membersrvc/membersrvc.yaml) file for your network. Look for the section that has a list of users like this:
+- Find an available user to enroll on one of your peers. This will most likely require you to grab a user from the [membersrvc.yaml](https://github.com/hyperledger/fabric/blob/v0.6/membersrvc/membersrvc.yaml#L199) file for your network. Look for the section that has a list of users like this:
 
   ```
   ...

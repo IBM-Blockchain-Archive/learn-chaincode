@@ -103,3 +103,10 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 
     return valAsbytes, nil
 }
+
+	var readAssetSchemas iot.ChaincodeFunc = func(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+		return []byte(schemas), nil
+	}
+	func init() {
+		iot.AddRoute("readAssetSchemas", "query", iot.SystemClass, readAssetSchemas)
+	}

@@ -386,7 +386,7 @@ var schemas = `
             "type": "object"
         }
     }
-}`
+}`  
 
 
 	var readAssetSchemas iot.ChaincodeFunc = func(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {

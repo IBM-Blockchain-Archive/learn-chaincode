@@ -10,7 +10,7 @@
 		{
 			"name": "Query",
 			"request": {
-				"url": "http://<PEER_HOST>:<PEER_PORT>/chaincode",
+				"url": "https://a61803a10fb94e278e65302f22bb6371-vp0.us.blockchain.ibm.com:5003/chaincode",
 				"method": "POST",
 				"header": [
 					{

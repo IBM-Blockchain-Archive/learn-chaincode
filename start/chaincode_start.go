@@ -123,7 +123,7 @@ func (t *SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 // Invoke - Our entry point for Invocations
 // ============================================================================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("invoke is running " + function)
+	fmt.Println("invoke is running mekyush " + function)
 
 	// Handle different functions
 	if function == "init" {													//initialize the chaincode state, used as reset
@@ -255,12 +255,13 @@ func (t *SimpleChaincode) Write(stub shim.ChaincodeStubInterface, args []string)
 // ============================================================================================================================
 func (t *SimpleChaincode) init_marble(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var err error
-
+	fmt.Println("into init_marble 1")
 	//   0       1       2     3
 	// "asdf", "blue", "35", "bob"
-	if len(args) != 5 {
+	/*if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4")
-	}
+	}*/
+	fmt.Println("into init_marble 2")
 
 	//input sanitation
 	fmt.Println("- start init marble")
@@ -279,32 +280,41 @@ func (t *SimpleChaincode) init_marble(stub shim.ChaincodeStubInterface, args []s
 	if len(args[4]) <= 0 {
 		return nil, errors.New("5th argument must be a non-empty string")
 	}
+	
+	fmt.Println("into init_marble 3")
+	
 	name := args[0]
 	color := strings.ToLower(args[1])
 	user := strings.ToLower(args[3])
 	invoicenumber := strings.ToLower(args[4])
 	size, err := strconv.Atoi(args[2])
 	
+	fmt.Println("into init_marble 4")
+	
 	if err != nil {
 		return nil, errors.New("3rd argument must be a numeric string")
 	}
-
+	fmt.Println("into init_marble 5")
 	//check if marble already exists
 	marbleAsBytes, err := stub.GetState(name)
+	fmt.Println("into init_marble 6")
 	if err != nil {
 		return nil, errors.New("Failed to get marble name")
 	}
+	fmt.Println("into init_marble 7")
 	res := Marble{}
 	json.Unmarshal(marbleAsBytes, &res)
+	fmt.Println("into init_marble 8")
 	if res.Name == name{
 		fmt.Println("This marble arleady exists: " + name)
 		fmt.Println(res);
 		return nil, errors.New("This marble arleady exists")				//all stop a marble by this name exists
 	}
-	
+	fmt.Println("into init_marble 9")
 	//build the marble json string manually
 	str := `{"name": "` + name + `", "color": "` + color + `", "size": ` + strconv.Itoa(size) + `, "user": "` + user + `","invoicenumber":"`+invoicenumber+`"}`
 	err = stub.PutState(name, []byte(str))									//store marble with id as key
+	fmt.Println("into init_marble 10")
 	if err != nil {
 		return nil, err
 	}

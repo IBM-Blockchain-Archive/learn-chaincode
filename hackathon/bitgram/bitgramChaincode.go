@@ -198,7 +198,7 @@ func (t *SimpleChaincode) shareIdentity(stub shim.ChaincodeStubInterface, args [
 	str := `{ "BITGRAM_ID":"` + args[0] + `","SHARED_TO":"`+ args[1] + `","TIMESTAMP":"`+ strconv.FormatInt(makeTimestamp(), 10) +`"}`
 
 
-	err = stub.PutState(args[0] + `"_"` + args[1], []byte(str))								//store bitgram with id as key
+	err = stub.PutState(args[0] + args[1], []byte(str))								//store bitgram with id as key
 	if err != nil {
 		return nil, err
 	}
@@ -211,8 +211,8 @@ func (t *SimpleChaincode) shareIdentity(stub shim.ChaincodeStubInterface, args [
 	var bitgramShareIndex []string
 	json.Unmarshal(bitgramsAsBytes, &bitgramShareIndex)							//un stringify it aka JSON.parse()
 	
-	//append
-	bitgramShareIndex = append(bitgramShareIndex, args[0]+ `"_"` + args[1])								//add bitgram name to index list
+	//append "[\"111\\\"_\\\"IDFC\"]"
+	bitgramShareIndex = append(bitgramShareIndex, args[0]+ args[1])								//add bitgram name to index list
 	fmt.Println("! bitgram Share index: ", bitgramShareIndex)
 	jsonAsBytes, _ := json.Marshal(bitgramShareIndex)
 	err = stub.PutState(bitgramTradesStr, jsonAsBytes)						//store name of bitgram

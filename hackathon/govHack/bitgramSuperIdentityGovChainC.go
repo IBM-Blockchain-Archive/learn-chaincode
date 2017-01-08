@@ -198,8 +198,9 @@ func (t *SimpleChaincode) medClaim(stub shim.ChaincodeStubInterface, args []stri
 	var err error
 
 	
-    str := `{ "BITGRAM_ID":"` + args[0] + `","HOSPITAL_ID":"`+ args[1] + `","PAYLOAD":"`+ args[2] + `","TIMESTAMP":"`+ strconv.FormatInt(makeTimestamp(), 10) +`"}`
+    //str := `{ "BITGRAM_ID":"` + args[0] + `","HOSPITAL_ID":"`+ args[1] + `","PAYLOAD":"`+ args[2] + `","TIMESTAMP":"`+ strconv.FormatInt(makeTimestamp(), 10) +`"}`
 
+	str := args[0];
 	var medClaimId string = makeNewBitgramId()
 
 		
@@ -266,7 +267,7 @@ func (t *SimpleChaincode) createIdentity(stub shim.ChaincodeStubInterface, args 
 	json.Unmarshal(bitgramsAsBytes, &bitgramIndex)							//un stringify it aka JSON.parse()
 	
 	//append
-	bitgramIndex = append(bitgramIndex, args[0])								//add bitgram name to index list
+	bitgramIndex = append(bitgramIndex, superIdentity)								//add bitgram name to index list
 	fmt.Println("! bitgram index: ", bitgramIndex)
 	jsonAsBytes, _ := json.Marshal(bitgramIndex)
 	err = stub.PutState(bitgramIndexStr, jsonAsBytes)						//store name of bitgram

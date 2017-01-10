@@ -65,7 +65,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 
 	// Handle different functions
 	if function == "dummy_query" {											//read a variable
-		fmt.Println("hi there " + function)						//error
+		fmt.Println("hi there from amol " + function)						//error
 		return nil, nil;
 	}
 	fmt.Println("query did not find func: " + function)						//error

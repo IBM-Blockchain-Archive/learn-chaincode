@@ -19,7 +19,7 @@ package main
 import (
 	"errors"
 	"fmt"
-
+    "strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -39,14 +39,20 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err:= stub.PutState("hello world",[]byte(args[0]))
+	err := stub.PutState("aValue",[]byte(args[0]))
+    err1:= stub.PutState("bvalue",[]byte(args[1]))
 
-	if err!= nil{
+	if err != nil{
 		return nil,err
+	}
+	
+     if err1 != nil {
+		return nil,err1
 	}
 
 	return nil, nil
@@ -59,12 +65,15 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	  if function == "init" {
         return t.Init(stub, "init", args)
-    } else if function == "write" {
+    }
+     if function == "changeValue" {
+    	return t.changeValue(stub,args)
+    } 
+     if function == "write" {
         return t.write(stub, args)
     }
-
+   
 	 fmt.Println("invoke did not find func: " + function)					//error
-
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
@@ -89,16 +98,28 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 //Custom write function
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface,args []string) ([]byte,error) {
 
-	var key, value string
 	var err error
+    var key,value,jsonResp string
+
 	fmt.Println("running write()")
 
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}   
-        key = args[0]
-        value = args[1]
-      err = stub.PutState(key,[]byte(value))
+
+	key   = args[0]
+	value = args[1]
+
+        valAsbytes, err1 := stub.GetState(key)
+
+        fmt.Println(valAsbytes)
+        
+        if err1 != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+          return nil, errors.New(jsonResp)
+       }
+
+        err = stub.PutState(key,[]byte(value))
 
       if err!= nil {
       	return nil,err
@@ -107,9 +128,61 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface,args []string) 
       return nil,nil
 }
 
+func (t *SimpleChaincode) changeValue(stub shim.ChaincodeStubInterface,args []string) ([]byte,error) {
+
+	var err,err1 error
+	var changeValue,oldValue int
+	var jsonResp string
+
+	fmt.Println("running write()")
+
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	}   
+       
+      //--------get old value of key 
+
+        key := args[0] 
+
+        valAsbytes, err2 := stub.GetState(key)
+        //convert byte array to string
+        oldValString:= string(valAsbytes[:])
+       
+       if err2 != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+        return nil, errors.New(jsonResp)
+       }
+        
+        //convert old value of key from string to int 
+         oldValue ,err = strconv.Atoi(oldValString)
+
+          if err!= nil {
+      	return nil,err
+      }
+
+       //convert new value of key from string to int
+        changeValue,err1 = strconv.Atoi(args[1])
+        
+        if err1!= nil {
+      	return nil,err1
+      }
+
+      //Compute new value
+       
+       newValue := strconv.Itoa(oldValue + changeValue)
+
+    //write new value to stub
+   err4:= stub.PutState(key,[]byte(newValue))
+
+    if err4!= nil {
+      	return nil,err4
+      }
+ 
+      return nil,nil
+}
+
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
     var key, jsonResp string
-    var err error
 
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")

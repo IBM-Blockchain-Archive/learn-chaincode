@@ -3,7 +3,7 @@ node_modules
 *.exe
 
 # compiled chaincode
-start/start
+# start/start
 finished/finished
 
 # IntelliJ

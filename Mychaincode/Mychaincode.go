@@ -19,8 +19,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"time"
-	"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -42,7 +40,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err := stub.PutState("hello_world", []byte(args[0]))
+	err := stub.PutState("property1", []byte(args[0]))
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +57,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
+	} else if function == "changeOwner" {
+		return t.changeOwner(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -81,7 +81,6 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 // write - invoke function to write key/value pair
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
-	var random int
 	var err error
 	fmt.Println("running write()")
 
@@ -91,11 +90,27 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 	key = args[0] //rename for funsies
 	value = args[1]
-	fmt.Println("value is " + value)
-	now := time.Now()
-	random = now.Nanosecond()
-	fmt.Println("random is " + strconv.Itoa(random))
-	err = stub.PutState(key, []byte(strconv.Itoa(random))) //write the variable into the chaincode state
+	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+// change owner - invoke function to change owner of asset
+func (t *SimpleChaincode) changeOwner(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var asset, newowner string
+	var err error
+	fmt.Println("running write()")
+
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the asset, new owner")
+	}
+
+	asset = args[0] // the asset
+//	currentowner = args[1] // the current owner (for verification)
+	newowner = args[1] // the new owner
+	err = stub.PutState(asset, []byte(newowner)) //update the owner of the asset
 	if err != nil {
 		return nil, err
 	}

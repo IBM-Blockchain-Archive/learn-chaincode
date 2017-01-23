@@ -3,8 +3,8 @@ node_modules
 *.exe
 
 # compiled chaincode
-start/start
-finished/finished
+#start/start
+#finished/finished
 
 # IntelliJ
 .idea

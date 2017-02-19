@@ -97,7 +97,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 
 // **************************************************************************
-// Feb 18th 2017
+// Feb 18th 2017 - minor change
 // @itamar-m
 // function write as part blockchain tutorial
 

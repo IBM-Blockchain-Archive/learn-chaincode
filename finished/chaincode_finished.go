@@ -68,9 +68,14 @@ type AllTrades struct{
 // ============================================================================================================================
 func main() {
 
+        err := shim.Start(new(SimpleChaincode))
 	if err != nil {
 		fmt.Printf("Error startings Simple chaincode: %s", err)
 	}
+	var logger = shim.NewLogger("lg-project")
+	logger.SetLevel(shim.LogDebug)
+        logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
+        shim.SetLoggingLevel(logLevel)
 }
 
 // ============================================================================================================================
@@ -79,13 +84,6 @@ func main() {
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	var Aval int
 	var err error
-
-	var logger = shim.NewLogger("lg-project")
-        err := shim.Start(new(SimpleChaincode))
-	logger.SetLevel(shim.LogDebug)
-        logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
-        shim.SetLoggingLevel(logLevel)
-	
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}

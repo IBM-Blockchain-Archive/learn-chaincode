@@ -61,6 +61,7 @@ type AllTrades struct{
 	OpenTrades []AnOpenTrade `json:"open_trades"`
 }
 
+var logger = shim.NewLogger("lg-project")
 
 
 // ============================================================================================================================
@@ -72,7 +73,6 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error startings Simple chaincode: %s", err)
 	}
-	var logger = shim.NewLogger("lg-project")
 	logger.SetLevel(shim.LogDebug)
         logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
         shim.SetLoggingLevel(logLevel)

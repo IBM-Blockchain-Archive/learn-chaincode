@@ -62,20 +62,17 @@ type AllTrades struct{
 }
 
 var logger = shim.NewLogger("lg-project")
-
-
 // ============================================================================================================================
 // Main
 // ============================================================================================================================
 func main() {
-
-        err := shim.Start(new(SimpleChaincode))
+	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
 		fmt.Printf("Error startings Simple chaincode: %s", err)
 	}
 	logger.SetLevel(shim.LogDebug)
-        logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
-        shim.SetLoggingLevel(logLevel)
+	logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
+	shim.SetLoggingLevel(logLevel)
 }
 
 // ============================================================================================================================
@@ -130,8 +127,6 @@ func (t *SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 // ============================================================================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
-	logger.Debug("patisp start-recreated image successfully")
-
 	// Handle different functions
 	if function == "init" {													//initialize the chaincode state, used as reset
 		return t.Init(stub, "init", args)
@@ -166,7 +161,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 // ============================================================================================================================
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
-
+	logger.Debug("test debug a query")
 	// Handle different functions
 	if function == "read" {													//read a variable
 		return t.read(stub, args)

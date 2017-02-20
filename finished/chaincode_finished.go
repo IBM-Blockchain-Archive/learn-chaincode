@@ -161,7 +161,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 // ============================================================================================================================
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
-	logger.Debug("test debug a query")
+	logger.Debugf("test debug a query")
 	// Handle different functions
 	if function == "read" {													//read a variable
 		return t.read(stub, args)

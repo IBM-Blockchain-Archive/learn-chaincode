@@ -42,7 +42,7 @@ type Marble struct{
 	Color string `json:"color"`
 	Size int `json:"size"`
 	User string `json:"user"`
-	//Desc string `json:"desc"`	
+	//Desc string `json:"desc"`
 }
 
 type Description struct{
@@ -60,6 +60,11 @@ type AnOpenTrade struct{
 type AllTrades struct{
 	OpenTrades []AnOpenTrade `json:"open_trades"`
 }
+
+var logger = shim.NewLogger("lg-project")
+logger.SetLevel(shim.LogDebug)
+logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
+shim.SetLoggingLevel(logLevel)
 
 // ============================================================================================================================
 // Main

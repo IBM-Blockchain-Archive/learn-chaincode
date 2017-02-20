@@ -130,6 +130,7 @@ func (t *SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string,
 // ============================================================================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
+	logger.Debug("patisp start-recreated image successfully")
 
 	// Handle different functions
 	if function == "init" {													//initialize the chaincode state, used as reset

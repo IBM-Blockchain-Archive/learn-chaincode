@@ -26,7 +26,7 @@ import (
 	"encoding/json"
 	"time"
 	"strings"
-
+	"os"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -62,15 +62,16 @@ type AllTrades struct{
 }
 
 var logger = shim.NewLogger("lg-project")
+err := shim.Start(new(SimpleChaincode))
+logger.SetLevel(shim.LogDebug)
+logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
+shim.SetLoggingLevel(logLevel)
 
 // ============================================================================================================================
 // Main
 // ============================================================================================================================
 func main() {
-	err := shim.Start(new(SimpleChaincode))
-	logger.SetLevel(shim.LogDebug)
-	logLevel, _ := shim.LogLevel(os.Getenv("SHIM_LOGGING_LEVEL"))
-	shim.SetLoggingLevel(logLevel)
+
 	if err != nil {
 		fmt.Printf("Error startings Simple chaincode: %s", err)
 	}

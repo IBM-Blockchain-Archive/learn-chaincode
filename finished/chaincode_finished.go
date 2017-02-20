@@ -160,8 +160,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 // Query - Our entry point for Queries
 // ============================================================================================================================
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("patisp query is running " + function)
+  fmt.Println("patisp query is running " + function)
 	logger.Debugf("patisp test debug a query")
+
 	// Handle different functions
 	if function == "read" {													//read a variable
 		return t.read(stub, args)

@@ -13,7 +13,7 @@ In order to support multiple versions of the Hyperledger fabric, this repository
   - Hyperledger fabric v0.5-developer-preview
   - IBM Bluemix Blockchain Service v0.4.2
 
-- [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0)
+- [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0) 
 
   - Hyperledger fabric v0.6-developer-preview
 

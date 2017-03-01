@@ -1,5 +1,5 @@
 # Chaincode Development Environment
-The following is a list of dependencies and recommended tools that you should install in order to develop chaincode.
+The following instructions is a list of dependencies and recommended tools that you should install in order to develop chaincode.
 
 ### Git
 - [Git download page](https://git-scm.com/downloads)

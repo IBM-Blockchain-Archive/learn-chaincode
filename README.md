@@ -93,6 +93,8 @@ The following tasks take you through the process of building a pipeline that wil
   ```
 
   - It should compile with no errors/text. If not, make sure that you have correctly installed Go per the [development environment setup instructions](docs/setup.md).
+    => here there is a compilation error due to interface mismatch
+    => fix : use Fabric v0.6.
 
 5. Push the changes back to your fork on GitHub.
 

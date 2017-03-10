@@ -16,6 +16,7 @@ In order to support multiple versions of the Hyperledger fabric, this repository
 - [v2.0](https://github.com/ibm-blockchain/learn-chaincode/tree/v2.0)
 
   - Hyperledger fabric v0.6-developer-preview
+  - IBM Bluemix Blockchain Service v1.0.0
 
 If you'd like to just deploy the sample code without completing the tutorial, then use the following URLs for the path parameter when deploying via the fabric REST API. Choose the URL that corresponds to the branch you are using above.
 
@@ -250,7 +251,7 @@ If you're stuck or confused at any point, just go check out the `chaincode_finis
 
 # Interacting with Your First Chaincode
 
-The fastest way to test your chaincode is to use the REST interface on your peers. If you're using the blockchain service on Bluemix, you should follow the steps described [here](https://new-console.ng.bluemix.net/docs/services/blockchain/ibmblockchain_tutorials.html). Otherwise, we recommend using a tool like Postman, as described in the [environment setup documentation](docs/setup.md). There are two REST endpoints we will be interacting with: `/chaincode` and `/registrar`.
+The fastest way to test your chaincode is to use the REST interface on your peers. If you're using the blockchain service on Bluemix, you should follow the steps described [here](https://console.ng.bluemix.net/docs/services/blockchain/ibmblockchain_tutorials.html). Otherwise, we recommend using a tool like Postman, as described in the [environment setup documentation](docs/setup.md). There are two REST endpoints we will be interacting with: `/chaincode` and `/registrar`.
 
 - `/chaincode` is the endpoint used for deploying, invoking, and querying chaincode. Which operation you perform is controlled by the body of the request that you send.
 - `/registrar` allows you to enroll users. Why does this matter? Read on!
@@ -259,7 +260,7 @@ The fastest way to test your chaincode is to use the REST interface on your peer
 
 Calls to the `/chaincode` endpoint of the REST interface require a secure context ID to be included in the body of the request. This means that you must first enroll a user from the user list in the membership service for your network.
 
-- Find an available user to enroll on one of your peers. This will most likely require you to grab a user from the [membersrvc.yaml](https://github.com/hyperledger/fabric/blob/v0.6/membersrvc/membersrvc.yaml#L199) file for your network. Look for the section that has a list of users like this:
+- Find an available user to enroll on one of your peers. This will most likely require you to grab a user from the [membersrvc.yaml](https://github.com/hyperledger/fabric/blob/v0.6/membersrvc/membersrvc.yaml#L199) file for your network. That link points to an example file from the fabric repository. Unless you are running on Bluemix, it is most likely that you will have the same users in your membership service as the ones listed in that file. Look for the section that has a list of users like this:
 
   ```
   ...
@@ -268,18 +269,17 @@ Calls to the `/chaincode` endpoint of the REST interface require a secure contex
   test_user2: 1 zMflqOKezFiA bank_c        00008
   ...
   ```
-
-- Open up a notepad and copy one set of credentials. You will need them later.
+- All we care about are the usernames and secrets for these users. Open up a notepad and copy one set of credentials. You will use them to enroll the user.
 
   ```
   test_user0 MS9qrN8hFjlE
   ```
 
-- Create a POST request like the example below.
+- Create an enrollment POST request in Postman like the example below.
 
   ![/registrar POST](imgs/registrar_post.png)
 
-  The url indicates that the REST port for one of my Bluemix peers is accessible at `b88037dd5b6d423caf5258c6b7b15f5a-vp3.dev.blockchain.ibm.com:443`. This is the api URL for vp3\. You would find this information on the **Service Credentials** tab of the Blockchain dashboard or the **Network** tab of your Bluemix console. This specific registration is being sent to vp3, but it could be directed at any network peer.
+- You can see that we sent the username and secret to the `/registrar` endpoint of a peer. If you're wondering where the rest of that url came from, it came from my blockchain Bluemix service credentials. You can find this information yourself on the **Service Credentials** tab of the blockchain service on your Bluemix dashboard or the **Network** tab of your blockchain service dashboard.
 
 - The body for the request:
 
@@ -290,7 +290,7 @@ Calls to the `/chaincode` endpoint of the REST interface require a secure contex
   }
   ```
 
-- Send the request. If everything goes smoothly, you will see a response like the one below
+- Send the request. If everything goes smoothly, you will see a response like the one below:
 
   ![/registrar response](imgs/registrar_post_response.png)
 

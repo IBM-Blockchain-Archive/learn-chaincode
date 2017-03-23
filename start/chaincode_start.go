@@ -62,6 +62,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 		return t.write(stub, args)
 	}
+	fmt.Println("oopps!")
 	fmt.Println("invoke did not find func: " + function)
 
 	return nil, errors.New("Received unknown function invocation")

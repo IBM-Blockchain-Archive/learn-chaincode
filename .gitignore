@@ -8,3 +8,6 @@ finished/finished
 
 # IntelliJ
 .idea
+
+#VSCode
+.vscode

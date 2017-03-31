@@ -15,15 +15,15 @@ Git is a great version control tool to familiarize yourself with, both for chain
 After following the installation instructions above, you can verify that git is installed using the following command:
 
 ```
-$ git version
-git version 2.9.0.windows.1
+$ git --version
+git version 2.11.1.windows.1
 ```
 
 Once you have git installed, go create an account for yourself on [GitHub](https://github.com/). The IBM Blockchain service on Bluemix currently requires that chaincode be in a GitHub repository in order to be deployed through the REST API.
 
 ## Go
 
-- [Go 1.6 install](https://golang.org/dl/#go1.6.3)
+- [Go download page](https://golang.org/dl)
 - [Go installation instructions](https://golang.org/doc/install)
 - [Go documentation and tutorials](https://golang.org/doc/)
 
@@ -85,7 +85,7 @@ chaincode_example02.go:27:2: cannot find package "github.com/hyperledger/fabric/
 
 A list of known specific releases is included below:
 
-- [Blockchain service on Bluemix](https://new-console.ng.bluemix.net/catalog/services/blockchain/) - use the v0.5-developer-preview release
+- [Blockchain service on Bluemix](https://new-console.ng.bluemix.net/catalog/services/blockchain/) - use the v0.6 release
 
 ## Postman
 
@@ -105,7 +105,7 @@ Node.js is NOT necessary to develop chaincode, but most of our demos are built o
 
 ### Instructions
 
-Download the latest LTS installation package and make sure the following commands work on your machine:
+Download the latest Node.js LTS installation package and make sure the following commands work on your machine:
 
 ```
 $ node -v

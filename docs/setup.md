@@ -27,7 +27,7 @@ Once you have git installed, go create an account for yourself on [GitHub](https
 - [Go installation instructions](https://golang.org/doc/install)
 - [Go documentation and tutorials](https://golang.org/doc/)
 
-Currently, Go is the only supported language for writing chaincode. The Go installation installs a set of Go CLI tools which are very useful when writing chaincode. For example, the `go build` command allows you to check that your chaincode actually compiles before you attempt to deploy it to a network. You should install Go 1.6, so that you have the same version of the language that the fabric is written against.
+Currently, Go is the only supported language for writing chaincode. The Go installation installs a set of Go CLI tools which are very useful when writing chaincode. For example, the `go build` command allows you to check that your chaincode actually compiles before you attempt to deploy it to a network. At time of writing, this chaincode is known to build successfully with version 1.7.5.
 
 ### Instructions
 
@@ -35,7 +35,7 @@ Follow the installation instructions linked above. You can verify that Go is ins
 
 ```
 $ go version
-go version go1.6.3 windows/amd64
+go version go1.7.5 windows/amd64
 
 $ echo $GOPATH
 C:\gopath
@@ -105,14 +105,14 @@ Node.js is NOT necessary to develop chaincode, but most of our demos are built o
 
 ### Instructions
 
-Download the appropriate installation package and make sure the following commands work on your machine:
+Download the latest LTS installation package and make sure the following commands work on your machine:
 
 ```
 $ node -v
-v4.4.7
+v6.10.1
 
 $ npm -v
-3.10.5
+3.10.10
 ```
 
 ## IDE Suggestions

@@ -53,7 +53,7 @@ Any piece of chaincode that you write will need to import the chaincode shim fro
 
 ### Instructions
 
-Three different releases of the fabric are linked above. The release you choose needs to match the Hyperledger network you are deploying your chaincode onto. You will need to make sure that the fabric release you choose is stored under `$GOPATH/hyperledger/fabric`.
+Three different releases of the fabric are linked above. The release you choose needs to match the Hyperledger network you are deploying your chaincode onto. You will need to make sure that the fabric release you choose is stored under `$GOPATH/src/hyperledger/fabric`.
 
 The instructions below should take you through the process of properly installing the v0.5 release on your `GOPATH`.
 

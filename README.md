@@ -269,11 +269,33 @@ Calls to the `/chaincode` endpoint of the REST interface require a secure contex
   test_user2: 1 zMflqOKezFiA bank_c        00008
   ...
   ```
-- All we care about are the usernames and secrets for these users. Open up a notepad and copy one set of credentials. You will use them to enroll the user.
+- All we care about are the usernames and secrets for these users. Open up a notepad and copy one set of credentials. You will use them to enroll the user.  For the example list above, `test_user0` is a username and `MS9qrN8hFjlE` is a secret.
 
+- If you are using a network from Bluemix, you can find your list of users from either the API tab of the service dashboard, or your service credentials.
+
+  Example users from the service credentials:
   ```
-  test_user0 MS9qrN8hFjlE
+  ...
+      {
+        "enrollId": "user_type1_1",
+        "enrollSecret": "56244fa98b",
+        "affiliation": "group1",
+        "username": "user_type1_1",
+        "secret": "56244fa98b"
+      },
+      {
+        "enrollId": "user_type1_2",
+        "enrollSecret": "9853b2de7e",
+        "affiliation": "group1",
+        "username": "user_type1_2",
+        "secret": "9853b2de7e"
+      },
+  ...
   ```
+  
+  Example users from the API tab on the dashboard:
+  
+  ![/users from api tab](imgs/api_users.PNG)
 
 - Create an enrollment POST request in Postman like the example below.
 

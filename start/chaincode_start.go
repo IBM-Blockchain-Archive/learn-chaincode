@@ -53,12 +53,12 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     // Handle different functions
     if function == "init" {
         return t.Init(stub, "init", args)
-    } else if function == "createAccoun" {
+    } else if function == "createAccount" {
         return t.createAccount(stub, args)
     }
     fmt.Println("invoke did not find func: " + function)
 
-    return nil, errors.New("Received unknown function invocation: " + function)
+    return nil, errors.New("abcReceived unknown function invocation: " + function)
 }
 
 func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {

@@ -39,24 +39,45 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	if len(args) != 1 {
+	if len(args) != 0 {
+		fmt.Println("initdayo")
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-
-	return nil, nil
+    return nil, nil
 }
 
 // Invoke is our entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
-	// Handle different functions
-	if function == "init" {													//initialize the chaincode state, used as reset
-		return t.Init(stub, "init", args)
-	}
-	fmt.Println("invoke did not find func: " + function)					//error
+    // Handle different functions
+    if function == "init" {
+        return t.Init(stub, "init", args)
+    } else if function == "createAccount" {
+    	fmt.Println("aaa:")
+        return t.createAccount(stub, args)
+    }
+    fmt.Println("invoke did not find func: " + function)
 
-	return nil, errors.New("Received unknown function invocation: " + function)
+    return nil, errors.New("Received unknown function invocation: " + function)
+}
+
+func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var username, password string
+	var err error
+	fmt.Println("running createAccount()")
+
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	}
+
+	username = args[0]                            //rename for fun
+	password = args[1]
+	err = stub.PutState(username, []byte(password))  //write the variable into the chaincode state
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
 }
 
 // Query is our entry point for queries
@@ -64,11 +85,28 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
-	if function == "dummy_query" {											//read a variable
-		fmt.Println("hi there " + function)						//error
-		return nil, nil;
+	if function == "read" {											//read a variable
+		return t.read(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)						//error
 
-	return nil, errors.New("Received unknown function query: " + function)
+	return nil, errors.New("aaaReceived unknown function query: " + function)
+}
+
+func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var username, jsonResp string
+	var err error
+
+    if len(args) != 1 {
+        return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
+    }
+
+    username = args[0]
+    valAsbytes, err := stub.GetState(username)
+    if err != nil {
+        jsonResp = "{\"Error\":\"Failed to get state for " + username + "\"}"
+        return nil, errors.New(jsonResp)
+    }
+
+    return valAsbytes, nil
 }

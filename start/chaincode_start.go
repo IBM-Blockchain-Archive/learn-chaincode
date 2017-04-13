@@ -42,12 +42,12 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-
+	/*
     err := stub.PutState("hello_world", []byte(args[0]))
     if err != nil {
         return nil, err
     }
-
+	*/
     return nil, nil
 }
 
@@ -58,26 +58,26 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     // Handle different functions
     if function == "init" {
         return t.Init(stub, "init", args)
-    } else if function == "write" {
-        return t.write(stub, args)
+    } else if function == "createAccount" {
+        return t.createAccount(stub, args)
     }
     fmt.Println("invoke did not find func: " + function)
 
     return nil, errors.New("Received unknown function invocation: " + function)
 }
 
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, value string
+func (t *SimpleChaincode) createAccount(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var username, password string
 	var err error
-	fmt.Println("running write()")
+	fmt.Println("running createAccount()")
 
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}
 
-	key = args[0]                            //rename for fun
-	value = args[1]
-	err = stub.PutState(key, []byte(value))  //write the variable into the chaincode state
+	username = args[0]                            //rename for fun
+	password = args[1]
+	err = stub.PutState(username, []byte(password))  //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
@@ -99,17 +99,17 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, jsonResp string
+	var username, jsonResp string
 	var err error
 
     if len(args) != 1 {
         return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
     }
 
-    key = args[0]
-    valAsbytes, err := stub.GetState(key)
+    username = args[0]
+    valAsbytes, err := stub.GetState(username)
     if err != nil {
-        jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+        jsonResp = "{\"Error\":\"Failed to get state for " + username + "\"}"
         return nil, errors.New(jsonResp)
     }
 

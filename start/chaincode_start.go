@@ -19,7 +19,6 @@ package main
 import (
 	"errors"
 	"fmt"
-
 	"github.com/hyperledger/fabric/core/chaincode/shim" 
 )
 
@@ -68,7 +67,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     if function == "init" {
         return t.Init(stub, "init", args)
     } else if function == "write" {
-        return t.write(stub, args)
+        return t.write(stub, args) 
     }
     fmt.Println("invoke did not find func: " + function)
 

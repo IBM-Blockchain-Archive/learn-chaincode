@@ -212,12 +212,23 @@ func (t *SimpleChaincode) shareIdentity(stub shim.ChaincodeStubInterface, args [
 // ============================================================================================================================
 func (t *SimpleChaincode) writeBitgramIdentity(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var err error
+	var str []string
 
+	old, err := stub.GetState(args[0])
+
+	if err != nil {
+		str1 := `[{ "LOAN_AMOUNT":"` + args[1] + `","TIME":"`+ args[2]  +`"}]`
+		err = stub.PutState(args[0], []byte(str1))								//store bitgram with id as key
+		
+	}else
+	{
+		json.Unmarshal(old, &str)
+		str = append(str, `{ "LOAN_AMOUNT":"` + args[1] + `","TIME":"`+ args[2]  +`"}`)
+		jsonAsBytes1, _ := json.Marshal(str)
+		err = stub.PutState(args[0], jsonAsBytes1)		
+	}
 	
-    str := `{ "LOAN_AMOUNT":"` + args[1] + `","TIME":"`+ args[2]  +`"}`
 
-
-	err = stub.PutState(args[0], []byte(str))								//store bitgram with id as key
 	if err != nil {
 		return nil, err
 	}

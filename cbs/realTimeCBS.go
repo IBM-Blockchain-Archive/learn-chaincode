@@ -110,6 +110,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.writeBitgramIdentity(stub, args)
 	} else if function == "shareIdentity" {							//shares a new trade order
 		return t.shareIdentity(stub, args)
+	} else if function == "Write" {							//shares a new trade order
+		return t.Write(stub, args)
 	} 
 	fmt.Println("invoke did not find func: " + function)		   //error
 

@@ -112,6 +112,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.shareIdentity(stub, args)
 	} else if function == "Write" {							//shares a new trade order
 		return t.Write(stub, args)
+	} else if function == "writeBitgramDoc" {							//shares a new trade order
+		return t.writeBitgramDoc(stub, args)
 	} 
 	fmt.Println("invoke did not find func: " + function)		   //error
 
@@ -127,6 +129,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" {													//read a variable
 		return t.read(stub, args)
+	} else if function == "readBitgramDoc" {			    //updates the bitgram identity record to the chaincode state
+		return t.readBitgramDoc(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)						//error
 

@@ -1,0 +1,91 @@
+{
+	"variables": [],
+	"info": {
+		"name": "NEW BlockchainREST",
+		"_postman_id": "1b854b6b-b18c-a6e7-121a-1117a6dd25a9",
+		"description": "Reflect the REST API's changes to chaincodeID, where path and name\nare used/returned instead of having to pass the url and version every\ntime.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query",
+			"request": {
+				"url": "http://<PEER_HOST>:<PEER_PORT>/chaincode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"query\",\r\n  \"params\": {\r\n      \"type\": 1,\r\n      \"chaincodeID\":{\r\n          \"name\":\"<CHAINCODE_HASH_HERE>\"\r\n      },\r\n      \"ctorMsg\": {\r\n         \"function\":\"read\",\r\n         \"args\":[\"hello_world\"]\r\n      },\r\n      \"secureContext\": \"<YOUR_USER_HERE>\"\r\n  },\r\n  \"id\": 5\r\n}"
+				},
+				"description": "Queries for the value of \"a\" from chaincode_example02"
+			},
+			"response": []
+		},
+		{
+			"name": "Invoke",
+			"request": {
+				"url": "http://<PEER_HOST>:<PEER_PORT>/chaincode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"invoke\",\r\n  \"params\": {\r\n      \"type\": 1,\r\n      \"chaincodeID\":{\r\n          \"name\":\"<CHAINCODE_HASH_HERE>\"\r\n      },\r\n      \"ctorMsg\": {\r\n         \"function\":\"write\",\r\n         \"args\":[\"hello_world\", \"go away\"]\r\n      },\r\n      \"secureContext\": \"<YOUR_USER_HERE>\"\r\n  },\r\n  \"id\": 3\r\n}"
+				},
+				"description": "Invokes a transaction of 20 units between \"a\" and \"b\""
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar Login",
+			"request": {
+				"url": "http://<PEER_HOST>:<PEER_PORT>/registrar",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"enrollId\": \"<YOUR_USER_HERE>\",\r\n  \"enrollSecret\": \"<YOUR_SECRET_HERE>\"\r\n}"
+				},
+				"description": "Login to a peer with an enrollID and enrollSecret"
+			},
+			"response": []
+		},
+		{
+			"name": "Deploy",
+			"request": {
+				"url": "http://<PEER_HOST>:<PEER_PORT>/chaincode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"deploy\",\n  \"params\": {\n    \"type\": 1,\n    \"chaincodeID\": {\n      \"path\": \"https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/finished\"\n    },\n    \"ctorMsg\": {\n      \"function\": \"init\",\n      \"args\": [\n        \"hi there\"\n      ]\n    },\n    \"secureContext\": \"<YOUR_USER_HERE>\"\n  },\n  \"id\": 1\n}"
+				},
+				"description": "Deploys chaincode_example02 to the peers and returns the name of the\nchaincode.  This name should be used in all subsequent Invoke and Query\ncalls."
+			},
+			"response": []
+		}
+	]
+}

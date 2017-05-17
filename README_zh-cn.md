@@ -1,7 +1,6 @@
-# NOTICE
+# 注意
 
-This repository is deprecated.  It only teaches you how to write chaincode for Hyperledger Fabric v0.6.  For information
-on how to write chaincode for the latest Fabric releases, see the [Hyperledger documentation](http://hyperledger-fabric.readthedocs.io/en/latest/chaincode.html).
+该仓库已经过时了。这里只指导你如何编写 Hyperledger Fabric v0.6 的链码。对于如何编写最新 Fabric 版本的链码信息，请参阅 [Hyperledger 文档](http://hyperledger-fabric.readthedocs.io/en/latest/chaincode.html)。
 
 # 学习链码
 

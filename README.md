@@ -354,7 +354,7 @@ In order to deploy chaincode through the REST interface, you will need to have t
     "params": {
       "type": 1,
       "chaincodeID": {
-        "path": "https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/finished"
+        "path": "http://gopkg.in/<YOUR_GITHUB_ID_HERE>/learn-chaincode.v2/start"
       },
       "ctorMsg": {
         "function": "init",
@@ -368,7 +368,9 @@ In order to deploy chaincode through the REST interface, you will need to have t
   }
   ```
 
-- The `"path":` is the path to your fork of the repository on Github, going one more directory down into `/finished`, where your `chaincode_finished.go` file lives.
+- The `"path":` is the path to your fork of the repository on Github, going one more directory down into `/start`, where your `chaincode_start.go` file lives. The `v.2` portion of the URL indicates that the peer should checkout the code from the `v2.0` branch of your fork.
+
+- You may be wondering why we didn't use a URL like `http://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/start`.  Well, this URL would work, but this would cause the peer to deploy the chaincode from the `master` branch of your repository, as opposed to the `v2.0` or `v1.0` branches.  If you've been following this guide to the letter, then you have been committing changes and pushing to these branches in your fork, not the `master` branch.
 
 - Send the request. If everything goes smoothly, you will see a response like the one below
 

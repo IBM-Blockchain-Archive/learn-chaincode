@@ -326,7 +326,7 @@ func main() {
     "params": {
       "type": 1,
       "chaincodeID": {
-        "path": "https://github.com/<YOUR_GITHUB_ID_HERE>/learn-chaincode/finished"
+        "path": "http://gopkg.in/<YOUR_GITHUB_ID_HERE>/learn-chaincode.v2/start"
       },
       "ctorMsg": {
         "function": "init",
@@ -340,7 +340,7 @@ func main() {
   }
   ```
 
-- `"path"`：你创建的 Github 仓库分支的路径，`chaincode_finished.go` 文件在它的下一级目录 `/finished` 中。
+- `"path"`：你创建的 Github 仓库分支的路径，`chaincode_start.go` 文件在它的下一级目录 `/start` 中。
 
 - 发送该请求。如果一切顺利，你会看到类似下面的响应：
 

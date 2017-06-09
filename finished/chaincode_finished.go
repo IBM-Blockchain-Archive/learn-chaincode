@@ -205,17 +205,17 @@ func createTableAuction(stub shim.ChaincodeStubInterface) error {
 	
 	columnOneTableOneDef := shim.ColumnDefinition{Name: "auction ID",Type: shim.ColumnDefinition_STRING, Key: true}
 	columnTwoTableOneDef := shim.ColumnDefinition{Name: "Consignor ID",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnThreeTableOneDef := shim.ColumnDefinition{Name: "Sale Year",Type: shim.ColumnDefinition_INT32, Key: false}
-	columnFourTableOneDef := shim.ColumnDefinition{Name: "Sale Number",Type: shim.ColumnDefinition_INT32, Key: false}
-	columnFiveTableOneDef := shim.ColumnDefinition{Name: "Lane Number",Type: shim.ColumnDefinition_INT32, Key: false}
-	columnSixTableOneDef := shim.ColumnDefinition{Name: "RUN Number",Type: shim.ColumnDefinition_INT32, Key: false}
+	columnThreeTableOneDef := shim.ColumnDefinition{Name: "Sale Year",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnFourTableOneDef := shim.ColumnDefinition{Name: "Sale Number",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnFiveTableOneDef := shim.ColumnDefinition{Name: "Lane Number",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnSixTableOneDef := shim.ColumnDefinition{Name: "RUN Number",Type: shim.ColumnDefinition_STRING, Key: false}
 	columnSevenTableOneDef := shim.ColumnDefinition{Name: "Lease Account Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnEightTableOneDef := shim.ColumnDefinition{Name: "Work order Number",Type: shim.ColumnDefinition_INT32, Key: false}
-	columnNineTableOneDef := shim.ColumnDefinition{Name: "Mileage",Type: shim.ColumnDefinition_INT32, Key: false}
-	columnTenTableOneDef := shim.ColumnDefinition{Name: "Buyer ID",Type: shim.ColumnDefinition_INT32, Key: false}
+	columnEightTableOneDef := shim.ColumnDefinition{Name: "Work order Number",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnNineTableOneDef := shim.ColumnDefinition{Name: "Mileage",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnTenTableOneDef := shim.ColumnDefinition{Name: "Buyer ID",Type: shim.ColumnDefinition_STRING, Key: false}
 	columnElevenTableOneDef := shim.ColumnDefinition{Name: "Buyer Name",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnTwelveTableOneDef := shim.ColumnDefinition{Name: "Sale Price",Type: shim.ColumnDefinition_INT64, Key: false}
-	columnThirteenTableOneDef := shim.ColumnDefinition{Name: "Check Amt",Type: shim.ColumnDefinition_INT64, Key: false}
+	columnTwelveTableOneDef := shim.ColumnDefinition{Name: "Sale Price",Type: shim.ColumnDefinition_STRING, Key: false}
+	columnThirteenTableOneDef := shim.ColumnDefinition{Name: "Check Amt",Type: shim.ColumnDefinition_STRING, Key: false}
 	columnFourteenTableOneDef := shim.ColumnDefinition{Name: "Payment Mode",Type: shim.ColumnDefinition_STRING, Key: false}
 	columnFifteenTableOneDef := shim.ColumnDefinition{Name: "Title Status",Type: shim.ColumnDefinition_STRING, Key: false}
 	columnSixteenTableOneDef := shim.ColumnDefinition{Name: "Vehicle Status",Type: shim.ColumnDefinition_STRING, Key: false}

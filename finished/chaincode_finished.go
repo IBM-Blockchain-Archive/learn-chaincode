@@ -56,7 +56,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		col15Val := args[14]
 		col16Val := args[15]
 		col17Val := args[16]
-		col18Val := args[17]
+//		col18Val := args[17]
 
 		
 
@@ -81,7 +81,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		col15 := shim.Column{Value: &shim.Column_String_{String_: col15Val}}
 		col16 := shim.Column{Value: &shim.Column_String_{String_: col16Val}}
 		col17 := shim.Column{Value: &shim.Column_String_{String_: col17Val}}
-		col18 := shim.Column{Value: &shim.Column_String_{String_: col18Val}}
+//		col18 := shim.Column{Value: &shim.Column_String_{String_: col18Val}}
 		columns = append(columns, &col1)
 		columns = append(columns, &col2)
 		columns = append(columns, &col3)
@@ -99,7 +99,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		columns = append(columns, &col15)
 		columns = append(columns, &col16)
 		columns = append(columns, &col17)
-		columns = append(columns, &col18)
+//		columns = append(columns, &col18)
 
 		row := shim.Row{Columns: columns}
 		ok, err := stub.InsertRow("auction", row)

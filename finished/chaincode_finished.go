@@ -175,9 +175,12 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		}
 
 		col1Val := args[0]
+		col2Val := args[1]
 		var columns []shim.Column
 		col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
+		col2 := shim.Column{Value: &shim.Column_String_{String_: col2Val}}
 		columns = append(columns, col1)
+		columns = append(columns, col2)
 
 		row, err := stub.GetRow("auction", columns)
 		if err != nil {

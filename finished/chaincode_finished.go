@@ -40,10 +40,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	err := stub.PutState("hello_world", []byte(args[0]))
-	if err != nil {
-		return nil, err
-	}
+ fmt.Println("Transakcję wykonał: ", stub.invo)
 
 	return nil, nil
 }
@@ -57,9 +54,12 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
+	} else if function == "write_attr" {
+		return t.write_attr(stub, args)
 	}
-	fmt.Println("invoke did not find func: " + function)
 
+
+	fmt.Println("invoke did not find func: " + function)
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
@@ -70,6 +70,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" { //read a variable
 		return t.read(stub, args)
+	}
+	else if function == "read_attr" {
+		return t.read_attr(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)
 
@@ -112,4 +115,35 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	return valAsbytes, nil
+}
+
+func (t *SimpleChaincode) write_attr(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var key, value string
+	var err error
+
+	if len(args) != 2{
+		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	}
+
+	key = args[0]
+	value = args[1]
+
+	err = stub.WriteCertAttribute("fruit", "banana")
+	if err!= nil{
+		return nil, err
+	}
+	return nil, nil
+}
+
+func (t *SimpleChaincode) read_attr(stub shim.ChaincodeStubInterface, args []string) ([]byte, error){
+	if len(args) != 1{
+		return nil, errors.New("Incorrect number of arguments. Expecting 1. name of the key and value to set")
+	}
+
+	attr, err := stub.ReadCertAttribute(arg[0])
+	 if err != nil {
+			 return "", errors.New("Couldn't get attribute " + attributeName + ". Error: " + err.Error())
+	 }
+	 attrString := string(attr)
+	 return attrString, nil
 }

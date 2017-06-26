@@ -67,8 +67,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	} else if function == "sendmail" {
-		return t.sendmail(stub)
+	} else if function == "sendthemail" {
+		return t.sendthemail(stub)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -126,7 +126,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	return valAsbytes, nil
 }
 
-func (t *SimpleChaincode) sendmail(stub shim.ChaincodeStubInterface) ([]byte, error) {
+func (t *SimpleChaincode) sendthemail(stub shim.ChaincodeStubInterface) ([]byte, error) {
 		// Set up authentication information.
 	auth := smtp.PlainAuth("", "golangtest5@gmail.com", "SuperSecret5", "rozak5151@gmail.com")
 
@@ -136,7 +136,7 @@ func (t *SimpleChaincode) sendmail(stub shim.ChaincodeStubInterface) ([]byte, er
 	msg := []byte("To: rozak5151@gmail.com\r\n" +
 		"Subject: test message!\r\n" +
 		"\r\n" +
-		"This is the email body.\r\n")
+		"This is the email body. lalalalalalalalalla\r\n")
 	err := smtp.SendMail("mail.example.com:25", auth, "golangtest5@gmail.com", to, msg)
 	if err != nil {
 		log.Fatal(err)

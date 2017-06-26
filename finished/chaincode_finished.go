@@ -17,11 +17,21 @@ limitations under the License.
 package main
 
 import (
+	"log"
 	"errors"
 	"fmt"
-
+  "net/smtp"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+
+type Customer struct{
+	PhoneNumber int `json:"PhoneNumber"`
+	Name string `json:"Name"`
+	Email string `json:"Email"`
+	Code int `json:"Code"`
+
+	//access code
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -40,7 +50,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
- fmt.Println("Transakcję wykonał: ", stub.invo)
+	err := stub.PutState("hello_world", []byte(args[0]))
+	if err != nil {
+		return nil, err
+	}
 
 	return nil, nil
 }
@@ -54,12 +67,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	} else if function == "write_attr" {
-		return t.write_attr(stub, args)
+	} else if function == "sendmail" {
+		return t.sendmail(stub)
 	}
-
-
 	fmt.Println("invoke did not find func: " + function)
+
 	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
@@ -71,16 +83,13 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	if function == "read" { //read a variable
 		return t.read(stub, args)
 	}
-	else if function == "read_attr" {
-		return t.read_attr(stub, args)
-	}
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
 
 // write - invoke function to write key/value pair
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {{
 	var key, value string
 	var err error
 	fmt.Println("running write()")
@@ -117,33 +126,21 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	return valAsbytes, nil
 }
 
-func (t *SimpleChaincode) write_attr(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, value string
-	var err error
+func (t *SimpleChaincode) sendmail(stub shim.ChaincodeStubInterface) ([]byte, error) {
+		// Set up authentication information.
+	auth := smtp.PlainAuth("", "golangtest5@gmail.com", "SuperSecret5", "rozak5151@gmail.com")
 
-	if len(args) != 2{
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	// Connect to the server, authenticate, set the sender and recipient,
+	// and send the email all in one step.
+	to := []string{"rozak5151@gmail.com"}
+	msg := []byte("To: rozak5151@gmail.com\r\n" +
+		"Subject: test message!\r\n" +
+		"\r\n" +
+		"This is the email body.\r\n")
+	err := smtp.SendMail("mail.example.com:25", auth, "golangtest5@gmail.com", to, msg)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	key = args[0]
-	value = args[1]
-
-	err = stub.WriteCertAttribute("fruit", "banana")
-	if err!= nil{
-		return nil, err
-	}
 	return nil, nil
-}
-
-func (t *SimpleChaincode) read_attr(stub shim.ChaincodeStubInterface, args []string) ([]byte, error){
-	if len(args) != 1{
-		return nil, errors.New("Incorrect number of arguments. Expecting 1. name of the key and value to set")
-	}
-
-	attr, err := stub.ReadCertAttribute(arg[0])
-	 if err != nil {
-			 return "", errors.New("Couldn't get attribute " + attributeName + ". Error: " + err.Error())
-	 }
-	 attrString := string(attr)
-	 return attrString, nil
 }

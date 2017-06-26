@@ -17,11 +17,21 @@ limitations under the License.
 package main
 
 import (
+	"log"
 	"errors"
 	"fmt"
-
+  "net/smtp"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+
+type Customer struct{
+	PhoneNumber int `json:"PhoneNumber"`
+	Name string `json:"Name"`
+	Email string `json:"Email"`
+	Code int `json:"Code"`
+
+	//access code
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -57,6 +67,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
+	} else if function == "sendmail" {
+		return t.sendmail(stub)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -112,4 +124,23 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	return valAsbytes, nil
+}
+
+func (t *SimpleChaincode) sendmail(stub shim.ChaincodeStubInterface) ([]byte, error) {
+		// Set up authentication information.
+	auth := smtp.PlainAuth("", "golangtest5@gmail.com", "SuperSecret5", "rozak5151@gmail.com")
+
+	// Connect to the server, authenticate, set the sender and recipient,
+	// and send the email all in one step.
+	to := []string{"rozak5151@gmail.com"}
+	msg := []byte("To: rozak5151@gmail.com\r\n" +
+		"Subject: test message!\r\n" +
+		"\r\n" +
+		"This is the email body.\r\n")
+	err := smtp.SendMail("mail.example.com:25", auth, "golangtest5@gmail.com", to, msg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return nil, nil
 }

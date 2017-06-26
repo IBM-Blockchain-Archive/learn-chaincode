@@ -17,10 +17,8 @@ limitations under the License.
 package main
 
 import (
-	"log"
 	"errors"
 	"fmt"
-  "net/smtp"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"gopkg.in/gomail.v2"
 )
@@ -83,6 +81,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" { //read a variable
 		return t.read(stub, args)
+	}else if function == "sendthemail" {
+		return t.sendthemail(stub)
 	}
 	fmt.Println("query did not find func: " + function)
 
@@ -90,7 +90,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 // write - invoke function to write key/value pair
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {{
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
 	var err error
 	fmt.Println("running write()")
@@ -145,7 +145,7 @@ func (t *SimpleChaincode) sendthemail(stub shim.ChaincodeStubInterface) ([]byte,
 
 	m := gomail.NewMessage()
 	    m.SetAddressHeader("From", "golangtest5@gmail.com", "test Sender")
-	    m.SetAddressHeader("To", "rozak5151@gmail.com")
+	    m.SetAddressHeader("To", "rozak5151@gmail.com", "Andrzej")
 	    m.SetHeader("Subject", "THis is subject!")
 	    m.SetBody("text/plain", "If you are reading this then u are reading this")
 
@@ -155,5 +155,5 @@ func (t *SimpleChaincode) sendthemail(stub shim.ChaincodeStubInterface) ([]byte,
 	        panic(err)
 	    }
 
-	return "mail", nil
+	return nil, nil
 }

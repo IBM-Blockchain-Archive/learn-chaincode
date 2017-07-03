@@ -19,7 +19,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"encoding/json"
+	//"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -65,9 +65,11 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	if function == "init" {
 		return t.Init(stub, "init", args)
-	} else if function == "enroll" {
-		return t.enroll(stub, args)
-	} 
+	} else if function == "write" {
+		return t.write(stub, args)
+	} else if function == "hello" {
+		return t.hello(stub)
+	}
 	fmt.Println("invoke did not find func: " + function)
 
 	return nil, errors.New("Received unknown function invocation: " + function)

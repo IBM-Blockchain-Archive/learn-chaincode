@@ -55,8 +55,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	if function == "init" {
 		return t.Init(stub, "init", args)
-	} else if function == "write" {
-		return t.write(stub, args)
+	} else if function == "enroll" {
+		return t.enroll(stub, args)
 	} 
 	fmt.Println("invoke did not find func: " + function)
 
@@ -79,7 +79,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 // write - invoke function to write key/value pair 
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
+func (t *SimpleChaincode) enroll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
 	var key, value string 
 	fmt.Println("running write()") 
 	

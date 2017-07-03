@@ -19,7 +19,6 @@ package main
 import (
 	"errors"
 	"fmt"
-
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -32,6 +31,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
+	
 }
 
 // Init resets all the things
@@ -57,7 +57,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	}
+	} 
 	fmt.Println("invoke did not find func: " + function)
 
 	return nil, errors.New("Received unknown function invocation: " + function)
@@ -70,30 +70,62 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" { //read a variable
 		return t.read(stub, args)
+	} else if function == "verifyUser" {
+		return t.verifyUser(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
 
-// write - invoke function to write key/value pair
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, value string
-	var err error
-	fmt.Println("running write()")
-
+// write - invoke function to write key/value pair 
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
+	var key, value string 
+	fmt.Println("running write()") 
+	
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}
 
-	key = args[0] //rename for funsies
+	key = args[0] //rename for fun
 	value = args[1]
-	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	err := stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
 	return nil, nil
 }
+
+func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var keyGuess string
+	var valGuess string
+	var returnMessage string
+	var err error
+	fmt.Println("running read")
+
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expected 2")
+	}
+
+	keyGuess = args[0]
+	valGuess = args[1]
+	
+	valActual, err := stub.GetState(keyGuess) 
+	if err != nil { 
+		returnMessage = "Username Incorrect. Login Failed"
+		return []byte(returnMessage), nil
+	}
+
+	if testEqualSlice([]byte(valGuess), valActual) {
+		returnMessage = "Login Succesful"	
+		return []byte(returnMessage), nil
+	} else {
+		returnMessage = "Password Incorrect. Login Failed"
+		return []byte(returnMessage), nil
+	}
+}
+
+
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
@@ -113,3 +145,24 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 
 	return valAsbytes, nil
 }
+
+func testEqualSlice (a []byte, b []byte) bool {
+
+	if a == nil && b == nil { 
+        return true; 
+    } else if a == nil || b == nil { 
+        return false; 
+    } 
+	
+	if len(a) != len(b) {
+        return false
+    }
+
+    for i := range a {
+        if a[i] != b[i] {
+            return false
+        }
+    }
+    return true
+}
+

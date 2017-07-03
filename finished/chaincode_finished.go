@@ -19,12 +19,22 @@ package main
 import (
 	"errors"
 	"fmt"
+	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
+
+/*type registeredUser struct {
+	Name string
+	Type string
+	BankBalance float64
+	Username string
+	Password string
+}*/
+
 
 func main() {
 	err := shim.Start(new(SimpleChaincode))
@@ -78,23 +88,70 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	return nil, errors.New("Received unknown function query: " + function)
 }
 
-// write - invoke function to write key/value pair 
-func (t *SimpleChaincode) enroll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
-	var key, value string 
-	fmt.Println("running write()") 
-	
+func (t *SimpleChaincode) hello(stub shim.ChaincodeStubInterface) ([]byte, error){
+	b,err := stub.GetState("hi")
+	if b != nil {
+		return []byte("b is not nil"), nil
+	} else {
+		return []byte("b is nil"), nil
+	}
+
+	if err != nil {
+		return []byte("err is not nil"), nil
+	} else {
+		return []byte("err is nil"), nil
+	}
+}
+
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	var key, value string
+	var err error
+	fmt.Println("running write()")
+
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}
 
-	key = args[0] //rename for fun
+	key = args[0]                            //rename for fun
 	value = args[1]
-	err := stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	err = stub.PutState(key, []byte(value))  //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
 	return nil, nil
 }
+
+// write - invoke function to write key/value pair 
+/*func (t *SimpleChaincode) enroll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
+	var name, type, username, password string 
+	var bankBalance float64 
+	var newUser registeredUser
+	fmt.Println("running write()") 
+	
+	if len(args) != 5 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 5. name of the key and value to set")
+	}
+
+	name = args[0] //rename for fun
+	type = args[1]
+	bankBalance = args[2]
+	username = args[3]
+	password = args[4]
+
+	newUser = registeredUser{name, type, bankBalance, username, password}
+	jsonUserInfo, err := json.Marshal(newUser)
+	if err != nil {
+
+	}
+
+
+
+	err := stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}*/
 
 func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var keyGuess string

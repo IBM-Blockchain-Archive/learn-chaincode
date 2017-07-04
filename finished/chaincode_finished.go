@@ -91,7 +91,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 func (t *SimpleChaincode) hello(stub shim.ChaincodeStubInterface) ([]byte, error){
-	b,err := stub.GetState("hi")
+	_,err := stub.GetState("hi")
 	/*if b != nil {
 		return []byte("b is not nil"), nil
 	} else {

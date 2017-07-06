@@ -19,7 +19,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	//"encoding/json"
+	"encoding/json"
+	"strconv"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -27,13 +28,13 @@ import (
 type SimpleChaincode struct {
 }
 
-/*type registeredUser struct {
+type registeredUser struct {
 	Name string
 	Type string
 	BankBalance float64
 	Username string
 	Password string
-}*/
+}
 
 
 func main() {
@@ -65,8 +66,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	if function == "init" {
 		return t.Init(stub, "init", args)
-	} else if function == "write" {
-		return t.write(stub, args)
+	} else if function == "enroll" {
+		return t.enroll(stub, args)
 	} 
 	fmt.Println("invoke did not find func: " + function)
 
@@ -82,28 +83,26 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.read(stub, args)
 	} else if function == "verifyUser" {
 		return t.verifyUser(stub, args)
-	} else if function == "hello" {
-		return t.hello(stub)
 	}
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
 
-func (t *SimpleChaincode) hello(stub shim.ChaincodeStubInterface) ([]byte, error){
+/*func (t *SimpleChaincode) hello(stub shim.ChaincodeStubInterface) ([]byte, error){
 	_,err := stub.GetState("hi")
-	/*if b != nil {
+	if b != nil {
 		return []byte("b is not nil"), nil
 	} else {
 		return []byte("b is nil"), nil
-	}*/
+	}
 
 	if err != nil {
 		return []byte("err is not nil"), nil
 	} else {
 		return []byte("err is nil"), nil
 	}
-}
+}*/
 
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, value string
@@ -124,10 +123,11 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 }
 
 // write - invoke function to write key/value pair 
-/*func (t *SimpleChaincode) enroll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
-	var name, type, username, password string 
+func (t *SimpleChaincode) enroll(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) { 
+	var name, typeUser, username, password string 
 	var bankBalance float64 
 	var newUser registeredUser
+	var errOne error
 	fmt.Println("running write()") 
 	
 	if len(args) != 5 {
@@ -135,16 +135,43 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	}
 
 	name = args[0] //rename for fun
-	type = args[1]
-	bankBalance = args[2]
+	typeUser = args[1]
+	bankBalance, errOne = strconv.ParseFloat(args[2], 64)
+	if errOne != nil {
+		return nil, errOne
+	}
 	username = args[3]
 	password = args[4]
 
-	newUser = registeredUser{name, type, bankBalance, username, password}
-	jsonUserInfo, err := json.Marshal(newUser)
-	if err != nil {
-
+	newUser = registeredUser{name, typeUser, bankBalance, username, password}
+	jsonUserInfo, errTwo := json.Marshal(newUser)
+	if errTwo != nil {
+		return nil, errTwo
 	}
+	mapUserInfo, errThree := stub.GetState("userLoginInfo")
+	if errThree != nil {
+		return nil, errThree
+	}
+
+	if mapUserInfo != nil {
+		mapUserInfo[username] = jsonUserInfo
+		return []byte("Added to Database"), nil
+	} else {
+		mapUserInfo := make(map[string][]byte)
+		mapUserInfo[username] = jsonUserInfo
+		stub.PutState("userLoginInfo", mapUserInfo)
+	
+		return []byte("Added to Database"), nil	
+	}
+
+	return []byte("Could not be enrolled due to error"), nil
+}
+
+/*func (t *SimpleChaincode) readUserInfo (stub shim.ChaincodeStubInterface, args []registeredUser, args []string) ([]byte, error) {
+	mapUserInfo := stub.GetState("userLoginInfo")
+	jsonUserInfo, err := json.Marshal(newUser)	
+	mapUserInfo[""]
+}
 
 
 
@@ -159,6 +186,7 @@ func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []st
 	var keyGuess string
 	var valGuess string
 	var returnMessage string
+	var userLogin registeredUser
 	var err error
 	fmt.Println("running read")
 
@@ -169,19 +197,38 @@ func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []st
 	keyGuess = args[0]
 	valGuess = args[1]
 	
-	valActual, err := stub.GetState(keyGuess) 
-	if err != nil { 
-		returnMessage = "Username Incorrect. Login Failed"
+	mapUserInfo, err := stub.GetState("userLoginInfo") 
+	if mapUserInfo == nil { 
+		returnMessage = "No Users have been registered"
 		return []byte(returnMessage), nil
 	}
 
-	if testEqualSlice([]byte(valGuess), valActual) {
+	valJSon := mapUserInfo[keyGuess]
+	if valJSon == nil {
+		returnMessage = "Username does not exist. Try Again"
+		return []byte(returnMessage), nil	
+	} else {
+		errTwo := json.Unmarshall(valJSon, &userLogin)
+		if errTwo != nil {
+			return nil, errTwo
+		} else {
+			if userLogin.password == valGuess {
+				returnMessage = "Login Succesful"
+				return []byte(returnMessage), nil		
+			} else {
+				returnMessage = "Password Incorrect. Try Again"
+				return []byte(returnMessage), nil
+			}
+		}
+	}
+
+	/*if testEqualSlice([]byte(valGuess), valActual) {
 		returnMessage = "Login Succesful"	
 		return []byte(returnMessage), nil
 	} else {
 		returnMessage = "Password Incorrect. Login Failed"
 		return []byte(returnMessage), nil
-	}
+	}*/
 }
 
 
@@ -205,7 +252,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	return valAsbytes, nil
 }
 
-func testEqualSlice (a []byte, b []byte) bool {
+/*func testEqualSlice (a []byte, b []byte) bool {
 
 	if a == nil && b == nil { 
         return true; 
@@ -223,5 +270,5 @@ func testEqualSlice (a []byte, b []byte) bool {
         }
     }
     return true
-}
+}*/
 

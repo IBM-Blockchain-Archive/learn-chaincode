@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -19,7 +20,7 @@ type user struct {
 	UserType		string 	`json:"user_type"`
 	CompanyName 	string	`json:"company_name"`
 	CompanyLocation	string	`json:"company_location"`
-	BankAccountNum		int		`json:"bank_account_num"`
+	BankAccountNum		int	`json:"bank_account_num"`
 	BankBalance		float64	`json:"bank_balance"`
 }
 
@@ -27,6 +28,27 @@ type userLogin struct {
 	LoginName		string 	`json:"login_name"`
 	Password 		string	`json:"password"`
 }
+
+type tradeRequest struct {
+	TradeRequestID int
+	ShipperID int
+	ProducerID int
+	EnergyKWH float64
+	GasPrice float64
+	TradeRequestStartDate time.Time
+	TradeRequestEndDate time.Time
+	tradeRequestStatus string
+	tradeRequestInvoiceID int
+	tradeRequestIncidentID int
+	transportRequestID int
+
+}
+/*Maps for each type of user:
+	*producerInfoMap
+	*shipperInfoMap
+	*buyerInfoMap
+	*transporterInfoMap
+*/
 
 
 func main() {
@@ -47,7 +69,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 
 	testUserName = "testUser1"
 	testPassword = "testUser1"
-	testUserType = "Buyer"
+	testUserType = "Producer"
 	testCompName = "testCompany1"
 	testCompLoc = "Vancouver"
 	testBankAccountNum = 123
@@ -72,6 +94,24 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		fmt.Println("Failed to save user credentials. UserLoginObj")
 	}
 
+	//create Maps for Each Type of User
+	producerInfoMap := make(map[string][]byte)
+	producerInfoMap[testUserName] = userObjBytes //adding testUser
+	producerInfoMapBytes, _ := json.Marshal(producerInfoMap)
+	shipperInfoMap := make(map[string][]byte)
+	shipperInfoMapBytes, _ := json.Marshal(shipperInfoMap)
+	buyerInfoMap := make(map[string][]byte)
+	buyerInfoMapBytes, _ := json.Marshal(buyerInfoMap)
+	transporterInfoMap := make(map[string][]byte)
+	transporterInfoMapBytes, _ := json.Marshal(transporterInfoMap)
+
+	
+
+	_ = stub.PutState("producerInfoMap", producerInfoMapBytes)
+	_ = stub.PutState("shipperInfoMap", shipperInfoMapBytes)
+	_ = stub.PutState("buyerInfoMap", buyerInfoMapBytes)
+	_ = stub.PutState("transporterInfoMap", transporterInfoMapBytes)
+
 	return nil, nil
 
 }
@@ -86,7 +126,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.write(stub, args)
 	} else if function == "register" {
 		return t.register(stub, args)
-	}
+	} 
 
 	fmt.Println("Invoke did not find func:" + function)
 
@@ -104,6 +144,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.verifyUser(stub, args)
 	} else if function == "getUserCredentials" {
 		return t.getUserCredentials(stub, args)
+	} else if function == "returnProducers" {
+		return t.returnProducers(stub)
 	}
 	fmt.Println("query did not find func: " + function)
 
@@ -153,6 +195,7 @@ func (t *SimpleChaincode) register(stub shim.ChaincodeStubInterface, args []stri
 
 	var userObj user	
 	var userLoginObj userLogin
+	var userMap map[string][]byte
 	fmt.Println("Running function Register")
 
 	if len (args) != 7 {
@@ -163,10 +206,11 @@ func (t *SimpleChaincode) register(stub shim.ChaincodeStubInterface, args []stri
 	userType = args[1]
 	compName = args[2]
 	compLoc = args[3]
-	bankAccountNum,_ = strconv.Atoi(args[4])
-	bankBalance,_ = strconv.ParseFloat(args[5], 64)
+	bankAccountNum, _ = strconv.Atoi(args[4])
+	bankBalance, _ = strconv.ParseFloat(args[5], 64)
 	password = args[6]
 
+	//CREATING USER STRUCT WITH GENERAL INFO
 	userObj = user{LoginID: userName, UserType: userType, 
 	CompanyName: compName, CompanyLocation: compLoc, BankAccountNum: bankAccountNum, 
 	BankBalance: bankBalance}
@@ -177,8 +221,35 @@ func (t *SimpleChaincode) register(stub shim.ChaincodeStubInterface, args []stri
 	err3 := stub.PutState(userName, userObjBytes)
 	if err3 != nil {
 		return nil, errors.New("Failed to save User credentials")
-	}
+	} 
+	//ADDING USER TO CORRESPONDING MAP
+	if userType == "Producer" {
+		userMapObj, _ := stub.GetState("producerInfoMap")
+		_ = json.Unmarshal(userMapObj, &userMap)
+		userMap[userName] = userObjBytes
+		userMapObj,_ = json.Marshal(&userMap)
+		_ = stub.PutState("producerInfoMap", userMapObj)
+	} else if userType == "Shipper" {
+		userMapObj, _ := stub.GetState("shipperInfoMap")
+		_ = json.Unmarshal(userMapObj, &userMap)
+		userMap[userName] = userObjBytes
+		userMapObj,_ = json.Marshal(&userMap)
+		_ = stub.PutState("shipperInfoMap", userMapObj)	
+	} else if userType == "Buyer" {
+		userMapObj, _ := stub.GetState("buyerInfoMap")
+		_ = json.Unmarshal(userMapObj, &userMap)
+		userMap[userName] = userObjBytes
+		userMapObj,_ = json.Marshal(&userMap)
+		_ = stub.PutState("buyerInfoMap", userMapObj)	
+	} else if userType == "Transporter" {
+		userMapObj, _ := stub.GetState("transporterInfoMap")
+		_ = json.Unmarshal(userMapObj, &userMap)
+		userMap[userName] = userObjBytes
+		userMapObj,_ = json.Marshal(&userMap)
+		_ = stub.PutState("transporterInfoMap", userMapObj)	
+	} 
 
+	//CREATING USER LOGIN STRUCT WITH LOGIN INFO
 	userLoginObj = userLogin{LoginName: userName, Password: password}
 	userLoginBytes, err1 := json.Marshal(&userLoginObj)
 	if err1 != nil {
@@ -259,6 +330,20 @@ func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []st
 		return []byte(returnMessage), nil
 	}
 	return nil, nil
+}
+
+func (t *SimpleChaincode) returnProducers(stub shim.ChaincodeStubInterface) ([]byte, error) {
+	mapProducerInfo := make(map[string][]byte)
+	var returnMessage string
+	fmt.Println("Running returning Producers")
+	mapProducerInfoBytes, _ := stub.GetState("producerInfoMap")
+	_ = json.Unmarshal(mapProducerInfoBytes, &mapProducerInfo)
+	returnMessage = ""
+	for k, _ := range mapProducerInfo {
+		returnMessage = k + "\n"	
+	} 
+	return []byte(returnMessage), nil
+
 }
 
 func testEqualSlice (a []byte, b []byte) bool {

@@ -340,7 +340,7 @@ func (t *SimpleChaincode) returnProducers(stub shim.ChaincodeStubInterface) ([]b
 	_ = json.Unmarshal(mapProducerInfoBytes, &mapProducerInfo)
 	returnMessage = ""
 	for k, _ := range mapProducerInfo {
-		returnMessage = k + "\n"	
+		returnMessage = returnMessage + k + " "	
 	} 
 	return []byte(returnMessage), nil
 

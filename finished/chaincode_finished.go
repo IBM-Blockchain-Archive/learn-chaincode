@@ -19,6 +19,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"bytes"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -82,12 +83,19 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	var err error
 	fmt.Println("running write()")
 
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+	if len(args) != 4 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 4. Hash of .mp3, user_wallet, artist_wallet and price.")
 	}
 
 	key = args[0] //rename for funsies
-	value = args[1]
+
+	var buffer bytes.Buffer
+	for i := 1; i < 4; i++ {
+		buffer.WriteString(args[i])
+		buffer.WriteString(". ")
+		value = buffer.String()
+	}
+
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
@@ -101,7 +109,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	var err error
 
 	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
+		return nil, errors.New("Incorrect number of arguments. Expecting .mp3 hash.")
 	}
 
 	key = args[0]

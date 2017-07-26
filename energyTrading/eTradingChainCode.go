@@ -143,8 +143,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.read(stub, args)
 	} else if function == "verifyUser" {
 		return t.verifyUser(stub, args)
-	} else if function == "getUserCredentials" {
-		return t.getUserCredentials(stub, args)
+	} else if function == "getUserInfo" {
+		return t.getUserInfo(stub, args)
 	} /*else if function == "returnProducers" {
 		return t.returnProducers(stub)
 	}*/
@@ -265,7 +265,7 @@ func (t *SimpleChaincode) register(stub shim.ChaincodeStubInterface, args []stri
 
 }
 
-func (t *SimpleChaincode) getUserCredentials(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) getUserInfo(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var userNameGuess, returnMessage string
 	var userSample user
 	fmt.Println("Getting User Credentials")
@@ -292,7 +292,7 @@ func (t *SimpleChaincode) getUserCredentials(stub shim.ChaincodeStubInterface, a
 		//more can be added
 		returnMessage = "Retrieved Credentials are " + userSample.LoginID + " " + userSample.UserType + " " + userSample.CompanyName + " " + userSample.CompanyLocation +
 		" " + strconv.Itoa(userSample.BankAccountNum) + " " + strconv.FormatFloat(userSample.BankBalance, 'f', -1, 64)
-		return []byte(returnMessage), nil
+		return userInfo, nil
 	} else {
 		returnMessage = "Not authorized to get access"
 		return []byte(returnMessage), nil
@@ -334,7 +334,7 @@ func (t *SimpleChaincode) verifyUser(stub shim.ChaincodeStubInterface, args []st
 	return nil, nil
 }
 
-/*func (t *SimpleChaincode) returnProducers(stub shim.ChaincodeStubInterface) ([]byte, error) {
+func (t *SimpleChaincode) returnProducers(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	var userSample user
 
 	mapProducerInfo := make(map[string][]byte)
@@ -403,7 +403,7 @@ func (t *SimpleChaincode) updateUserInfo(stub shim.ChaincodeStubInterface, argsU
 	return nil, nil
 }
 
-func (t *SimpleChaincode) makeTradeRequest(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
+/*func (t *SimpleChaincode) makeTradeRequest(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
 	var shipperID, producerID, entryLocation, tradeRequestStartDate, tradeRequestEndDate string
 	var tradeRequestID int
 	var energyKWH, gasPrice float64

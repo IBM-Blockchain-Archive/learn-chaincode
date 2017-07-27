@@ -145,9 +145,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.verifyUser(stub, args)
 	} else if function == "getUserInfo" {
 		return t.getUserInfo(stub, args)
-	} /*else if function == "returnProducers" {
+	} else if function == "returnProducers" {
 		return t.returnProducers(stub)
-	}*/
+	}
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)

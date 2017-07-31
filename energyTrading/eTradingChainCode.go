@@ -526,6 +526,30 @@ func (t *SimpleChaincode) returnTradeRequestShipperList(stub shim.ChaincodeStubI
 	return []byte(returnMessage), nil
 }
 
+func (t *SimpleChaincode) returnTradeRequestProducerList(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
+	var producerID, returnMessage string
+	var lenMap int
+	mapProducerRequestInfo := make(map[string][]byte)
+	fmt.Println("Running returning Trade Requests for one Producer")
+
+	producerID = args[0]
+	mapProducerRequestInfoBytes, _ := stub.GetState(producerID + "TradeRequestProducerMap")
+	_ = json.Unmarshal(mapProducerRequestInfoBytes, &mapProducerRequestInfo)
+	lenMap = len(mapProducerRequestInfo)
+	returnMessage = "{\"statusCode\" : \"SUCCESS\", \"body\" : ["
+
+	for k, _ := range mapProducerRequestInfo {
+		tradeRequestInfo, _ := stub.GetState(k)
+		returnMessage = returnMessage + string(tradeRequestInfo)
+		lenMap = lenMap - 1
+		if (lenMap!= 0) {
+			returnMessage = returnMessage + ","
+		}
+	}
+	returnMessage = returnMessage + "]}"
+	return []byte(returnMessage), nil
+}
+
 func testEqualSlice (a []byte, b []byte) bool {
 
 	if a == nil && b == nil { 

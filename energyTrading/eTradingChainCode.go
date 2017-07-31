@@ -185,7 +185,6 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
         jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
         return nil, errors.New(jsonResp)
     }
-
     return valAsbytes, nil
 }
 
@@ -490,11 +489,13 @@ func (t *SimpleChaincode) makeTradeRequest(stub shim.ChaincodeStubInterface, arg
 	return nil, nil
 }
 
-/*func (t *SimpleChaincode) returnShipperTradeRequestMap(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
-	var shipperID string
-	var 
-
-}*/
+func (t *SimpleChaincode) returnTradeRequest(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
+	var tradeRequestID string
+	
+	tradeRequestID = args[0]
+	tradeRequestObjBytes, _ := stub.GetState(tradeRequestID)
+	return []byte(string(tradeRequestObjBytes)), nil
+}
 
 func testEqualSlice (a []byte, b []byte) bool {
 

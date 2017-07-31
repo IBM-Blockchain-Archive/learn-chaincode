@@ -150,8 +150,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.getUserInfo(stub, args)
 	} else if function == "returnProducers" {
 		return t.returnProducers(stub)
-	} else if function == "returnTradeRequest" {
-		return t.returnTradeRequest(stub, args)
+	} else if function == "returnTradeRequestShipperList" {
+		return t.returnTradeRequestShipperList(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)
 
@@ -494,12 +494,36 @@ func (t *SimpleChaincode) makeTradeRequest(stub shim.ChaincodeStubInterface, arg
 	return nil, nil
 }
 
-func (t *SimpleChaincode) returnTradeRequest(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
+/*func (t *SimpleChaincode) returnTradeRequest(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
 	var tradeRequestID string
 	
 	tradeRequestID = args[0]
 	tradeRequestObjBytes, _ := stub.GetState(tradeRequestID)
 	return []byte(string(tradeRequestObjBytes)), nil
+}*/
+
+func (t *SimpleChaincode) returnTradeRequestShipperList(stub shim.ChaincodeStubInterface, args[] string) ([]byte, error) {
+	var shipperID, returnMessage string
+	var lenMap int
+	mapShipperRequestInfo := make(map[string][]byte)
+	fmt.Println("Running returning Trade Requests for one shipper")
+
+	shipperID = args[0]
+	mapShipperRequestInfoBytes, _ := stub.GetState(shipperID + "TradeRequestShipperMap")
+	_ = json.Unmarshal(mapShipperRequestInfoBytes, &mapShipperRequestInfo)
+	lenMap = len(mapShipperRequestInfo)
+	returnMessage = "{\"statusCode\" : \"SUCCESS\", \"body\" : ["
+
+	for k, _ := range mapShipperRequestInfo {
+		tradeRequestInfo, _ := stub.GetState(k)
+		returnMessage = returnMessage + string(tradeRequestInfo)
+		lenMap = lenMap - 1
+		if (lenMap!= 0) {
+			returnMessage = returnMessage + ","
+		}
+	}
+	returnMessage = returnMessage + "]}"
+	return []byte(returnMessage), nil
 }
 
 func testEqualSlice (a []byte, b []byte) bool {

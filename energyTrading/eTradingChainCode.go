@@ -127,7 +127,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.write(stub, args)
 	} else if function == "register" {
 		return t.register(stub, args)
-	} 
+	} else if function == "makeTradeRequest" {
+		return t.makeTradeRequest(stub, args)
+	}
+ 
 
 	fmt.Println("Invoke did not find func:" + function)
 
@@ -147,6 +150,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		return t.getUserInfo(stub, args)
 	} else if function == "returnProducers" {
 		return t.returnProducers(stub)
+	} else if function == "returnTradeRequest" {
+		return t.returnTradeRequest(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)
 

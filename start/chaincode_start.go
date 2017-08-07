@@ -118,6 +118,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     if function == "init" {
         return t.Init(stub, "init", args)
 	} else if function == "CreateVolume" {
+		fmt.Println("invoke is here!!!!" + function)
 		return t.CreateVolume(stub)
 	} /* else if function == "shipperToLogisticProvider" {
         return t.shipperToLogisticProvider(stub, args)

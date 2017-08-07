@@ -1,43 +1,107 @@
-/*
-Copyright IBM Corp 2016 All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-		 http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 package main
 
-import (
+/* import (
 	"errors"
 	"fmt"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+) */
+
+import (
+	"errors"
+	"fmt"
+	//"strconv"
+	//"strings"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
+	//"encoding/json"
+	//"regexp"
+	//"time"
+	//"crypto/md5"
+	//"io"
 )
+
+var logger = shim.NewLogger("CLDChaincode")
+
+// Participant
+const	SHIPPER      =  "shipper"
+const	LOGISTIC_PROVIDER   =  "logistic_provider"
+const	INSURENCE_COMPANY = "insurence_company"
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
 
-// ============================================================================================================================
-// Main
-// ============================================================================================================================
+type Volume struct {
+	NextStop								string `json: nextStop`
+	Origin									Origin
+	Destination								Destination
+	LogisticProvider						LogisticProvider
+	Volume									VolumeD
+	Event									Event
+}
+
+type Origin struct {
+	Name 									string `json: "name"`
+	Address 								string `json: "address"`
+	FederalTaxPayerId						string `json: "federalTaxPayerId"`
+	AddressNumber							int	   `json: "addressNumber"`
+	ZipCode									string `json: "zipCode"`
+}
+
+type EndCustomerFinal struct {
+	Name 									string `json: "name"`
+	FederalTaxPayerId						string `json: "federalTaxPayerId"`
+	Address 								string `json: "address"`
+	AddressNumber							int	   `json: "addressNumber"`
+	ZipCode									string `json: "zipCode"`
+	City									string `json: "city"`
+	Quarter									string `json: "quarter"`
+	Email									string `json: "email"`
+	Phone									string `json: "phone"`
+	Cellphone								string `json: "cellphone"`
+}
+
+type Destination struct {
+	EndCustomer 							EndCustomerFinal
+	ShipperEstimatedDeliveryDate 			string `json: "shipperEstimatedDeliveryDate"`
+	LogisticProviderEstimatedDeliveryDate	string `json: "logisticProviderEstimatedDeliveryDate"`
+}
+
+type LogisticProvider struct {
+	Id										string `json: "id"`
+	Name 									string `json: "name"`
+	Address 								string `json: "address"`
+	AddressNumber							int	   `json: "addressNumber"`
+	ZipCode									string `json: "zipCode"`
+	City									string `json: "city"`
+	Quarter									string `json: "quarter"`
+}
+
+type VolumeD struct {
+	TrackId									string `json: "trackId"` 
+	VolumeData								VolumeData														
+}
+
+type VolumeData struct {
+	Key										string `json: key`
+}
+
+type Event struct {
+	Date 									string `json: date`
+	StatusCode								string `json: statusCode`
+	Description								string `json: description`
+	LogisticProviderProperties				string `json: logisticProviderPropertis`
+}
+
 func main() {
+	fmt.Println("[IP] Start Contract")
+
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
 }
 
-// Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -48,27 +112,80 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 
 // Invoke is our entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("invoke is running " + function)
+    fmt.Println("invoke is running " + function)
 
-	// Handle different functions
-	if function == "init" {													//initialize the chaincode state, used as reset
-		return t.Init(stub, "init", args)
-	}
-	fmt.Println("invoke did not find func: " + function)					//error
+    // Handle different functions
+    if function == "init" {
+        return t.Init(stub, "init", args)
+	} else if function == "CreateVolume" {
+		fmt.Println("invoke is here!!!!" + function)
+		return t.CreateVolume(stub)
+	} /* else if function == "shipperToLogisticProvider" {
+        return t.shipperToLogisticProvider(stub, args)
+    } else if function == "LogisticProviderToCustomer" {
+		return t.LogisticProviderToCustomer(stub, args)
+	} else if function == "LogisticProviderToLogisticProvider" {
+		return t.LogisticProviderToLogisticProvider(stub, args)
+	} else if function == "LogisticProviderToShipper" {
+		return t.LogisticProviderToShipper(stub, args)
+	} */
 
-	return nil, errors.New("Received unknown function invocation: " + function)
+    fmt.Println("invoke did not find func: " + function)
+	logger.Debug("invoke did not find func: ", function)
+
+    return nil, errors.New("Received unknown function invocation")
 }
 
 // Query is our entry point for queries
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("query is running " + function)
+    fmt.Println("query is running " + function)
 
-	// Handle different functions
-	if function == "dummy_query" {											//read a variable
-		fmt.Println("hi there " + function)						//error
-		return nil, nil;
-	}
-	fmt.Println("query did not find func: " + function)						//error
-
-	return nil, errors.New("Received unknown function query: " + function)
+    /* if function == "read" {                            //read a variable
+        return t.read(stub, args)
+    }
+    fmt.Println("query did not find func: " + function)
+ */
+    return nil, errors.New("Received unknown function query")
 }
+
+// Functions to Write
+func (t *SimpleChaincode) CreateVolume(stub shim.ChaincodeStubInterface) ([]byte, error) {
+	var v Volume
+
+	//v.NextStop       	= nil
+	//v.Origin         	= nil
+	//v.Destination    	= nil
+	//v.LogisticProvifer	= nil
+	//v.Event         	= nil
+	v.Volume.TrackId	= "chave";
+
+ 	fmt.Println("[IP][Volume]: fmt" + v.Volume.TrackId)
+	logger.Debug("[IP][Volume]: logger", v)
+
+	return nil, nil
+	//err = json.Unmarshal([]byte(volume_json), &v)
+
+	// if volume already exists
+
+	/* record, err := stub.GetState(v.id)
+	if record != nil { return nil, errors.New("Volume already exists") } */
+
+	//_, err  = t.save_changes(stub, v)
+
+	//if err != nil { fmt.Printf("Create_Volume: Error saving changes: %s", err); return nil, errors.New("Error saving changes") }
+}
+
+/* func (t *SimpleChaincode) save_changes(stub shim.ChaincodeStubInterface, v Volume) (bool, error) {
+
+	bytes, err := json.Marshal(v)
+
+	if err != nil { fmt.Printf("SAVE_CHANGES: Error converting vehicle record: %s", err); return false, errors.New("Error converting volume record") }
+
+	err = stub.PutState(v.id, bytes)
+
+	if err != nil { fmt.Printf("SAVE_CHANGES: Error storing volume record: %s", err); return false, errors.New("Error storing volume record") }
+
+	return true, nil
+} */
+
+// Functions to Read

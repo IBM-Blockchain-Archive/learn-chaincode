@@ -118,7 +118,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
     if function == "init" {
         return t.Init(stub, "init", args)
 	} else if function == "createVolume" {
-		return t.createVolume(stub)
+		return t.CreateVolume(stub)
 	} /* else if function == "shipperToLogisticProvider" {
         return t.shipperToLogisticProvider(stub, args)
     } else if function == "LogisticProviderToCustomer" {
@@ -148,7 +148,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 // Functions to Write
-func (t *SimpleChaincode) createVolume(stub shim.ChaincodeStubInterface) ([]byte, error) {
+func (t *SimpleChaincode) CreateVolume(stub shim.ChaincodeStubInterface) ([]byte, error) {
 	var v Volume
 
 	//v.NextStop       	= nil

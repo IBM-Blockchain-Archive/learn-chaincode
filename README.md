@@ -4,7 +4,7 @@ A tutorial to get you started with writing smart contracts for Hyperledger.
 
 # Deployment
 
-In order to support multiple versions of the Hyperledger fabric, this repository uses branches in combination with gopkg.in URLs. What does this mean for beginners? Just pick the branch below and use the instructions for that branch to complete the tutorial
+In order to support multiple versions of the Hyperledger fabric, this repository uses branches in combination with gopkg.in URLs. What does this mean for beginners? Just pick the branch below and use the instructions for that branch to complete the tutorial.
 
 ## Versions and Supported Platforms
 

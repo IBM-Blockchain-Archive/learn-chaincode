@@ -6,7 +6,7 @@ on how to write chaincode for the latest Fabric releases, see the [Hyperledger d
 # Learn Chaincode
 
 A tutorial to get you started with writing smart contracts for Hyperledger.
-
+//
 # Deployment
 
 In order to support multiple versions of the Hyperledger fabric, this repository uses branches in combination with gopkg.in URLs. What does this mean for beginners? Just pick the branch below and use the instructions for that branch to complete the tutorial
